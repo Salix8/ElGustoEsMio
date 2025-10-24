@@ -11,6 +11,7 @@ public class SpritePatrol : MonoBehaviour
     private Transform[] sprites;
     private Vector3[] targets;
     private bool[] waiting;
+    private Vector3[] originalScales;
     private float altura;
     private Bounds patrolBounds;
     private bool asignado = false;
@@ -38,6 +39,16 @@ public class SpritePatrol : MonoBehaviour
             // Mover sprite hacia el destino
             sprite.position = Vector3.MoveTowards(sprite.position, target, moveSpeed * Time.deltaTime);
 
+            float deltaX = target.x - sprite.position.x;
+            if (deltaX > -0.01f)
+            {
+                sprite.localScale = new Vector3(-Mathf.Abs(originalScales[i].x), originalScales[i].y, originalScales[i].z);
+            }
+            else if (deltaX < 0.01f)
+            {
+                sprite.localScale = new Vector3(Mathf.Abs(originalScales[i].x), originalScales[i].y, originalScales[i].z);
+            }
+
             // Si ha llegado, esperar y elegir nuevo destino
             if (Vector3.Distance(sprite.position, target) < 0.1f)
             {
@@ -51,10 +62,12 @@ public class SpritePatrol : MonoBehaviour
         sprites = new Transform[count];
         targets = new Vector3[count];
         waiting = new bool[count];
+        originalScales = new Vector3[count];
 
         for (int i = 0; i < count; i++)
         {
             sprites[i] = transform.GetChild(i);
+            originalScales[i] = sprites[i].localScale;
         }
 
         // Tomar la altura del primer sprite

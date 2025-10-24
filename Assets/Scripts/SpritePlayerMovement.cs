@@ -1,13 +1,24 @@
 using UnityEngine;
+using System.Collections;
 using System.Linq;
 
 public class SpritePlayerMovement : MonoBehaviour
 {
     [Header("Referencias")]
-    public Transform guia;             // Objeto guía que define límites (Collider o Collider2D)
-    public Camera camara;              // Cámara usada (si no, toma Camera.main)
-    public LayerMask layerMask = ~0;   // Capas a considerar en el raycast (por defecto todo)
+    public Transform guia;
+    public Camera camara;
+    public LayerMask layerMask = ~0;
     public float maxRayDistance = 1000f;
+
+    [Header("Feedback al arrastrar")]
+    [SerializeField] private float liftHeight = 0.3f;
+    [SerializeField] private float hoverShakeAmplitude = 0.05f;
+    [SerializeField] private float hoverShakeFrequency = 12f;
+    [SerializeField] private float tiltAmplitude = 6f;
+    [SerializeField] private float tiltFrequency = 8f;
+    [SerializeField] private float tiltLerpSpeed = 12f;
+    [SerializeField] private float dropDuration = 0.18f;
+    [SerializeField] private ParticleSystem dropParticlesPrefab;
 
     private Transform spriteSeleccionado;
     private Vector3 offset;
@@ -16,12 +27,16 @@ public class SpritePlayerMovement : MonoBehaviour
     private bool guiaTieneBounds2D = false;
     private Bounds guiaBounds2D;
 
+    private Quaternion rotationAntesDeArrastrar;
+    private float shakeSeed;
+    private Coroutine dropCoroutine;
+    private Vector3 ultimoPuntoPlano;
+
     void Start()
     {
         if (camara == null) camara = Camera.main;
         if (camara == null) Debug.LogError("No has asignado la cámara y no hay Main Camera en la escena.");
 
-        // Preparar bounds (3D o 2D)
         if (guia != null)
         {
             Collider col3 = guia.GetComponent<Collider>();
@@ -102,9 +117,10 @@ public class SpritePlayerMovement : MonoBehaviour
                 RaycastHit2D hit2d = Physics2D.Raycast(mouseWorld2D, Vector2.zero, 0f, layerMask);
                 if (hit2d.collider != null && hit2d.transform.IsChildOf(transform))
                 {
-                    Debug.Log($"Hit 2D: {hit2d.transform.name}");
-                    spriteSeleccionado = hit2d.transform;
-                    offset = spriteSeleccionado.position - (Vector3)mouseWorld2D;
+                    Transform seleccionado = hit2d.transform;
+                    Vector3 contacto = new Vector3(hit2d.point.x, transform.position.y, seleccionado.position.z);
+                    ConfigurarSpriteSeleccionado(seleccionado, contacto);
+                    Debug.Log($"Hit 2D: {seleccionado.name}");
                 }
             }
 
@@ -144,7 +160,13 @@ public class SpritePlayerMovement : MonoBehaviour
                     // si en cambio quieres mover en X-Y cambia la línea anterior.
                 }
 
-                spriteSeleccionado.position = punto;
+                ultimoPuntoPlano = punto;
+                spriteSeleccionado.position = punto + CalcularOffsetHover();
+                spriteSeleccionado.rotation = Quaternion.Slerp(
+                    spriteSeleccionado.rotation,
+                    CalcularRotacionHover(),
+                    tiltLerpSpeed * Time.deltaTime
+                );
             }
         }
 
@@ -152,15 +174,92 @@ public class SpritePlayerMovement : MonoBehaviour
         if (Input.GetMouseButtonUp(0) && spriteSeleccionado != null)
         {
             Debug.Log($"Soltado: {spriteSeleccionado.name}");
+            Transform soltado = spriteSeleccionado;
+            Vector3 destino = ultimoPuntoPlano;
+            destino.y = transform.position.y;
+            Quaternion rotDestino = rotationAntesDeArrastrar;
+
             spriteSeleccionado = null;
+            dropCoroutine = StartCoroutine(DropAndImpact(soltado, destino, rotDestino));
         }
     }
 
     private void SeleccionarDesdeHit3D(RaycastHit hit)
     {
-        spriteSeleccionado = hit.transform;
-        offset = spriteSeleccionado.position - hit.point;
+        ConfigurarSpriteSeleccionado(hit.transform, hit.point);
         Debug.Log($"Sprite seleccionado: {spriteSeleccionado.name} | offset {offset}");
+    }
+
+    private void ConfigurarSpriteSeleccionado(Transform sprite, Vector3 contacto)
+    {
+        if (dropCoroutine != null)
+        {
+            StopCoroutine(dropCoroutine);
+            dropCoroutine = null;
+        }
+
+        spriteSeleccionado = sprite;
+        offset = sprite.position - contacto;
+        offset.y = 0f;
+
+        rotationAntesDeArrastrar = sprite.rotation;
+        shakeSeed = Random.value * Mathf.PI * 2f;
+        ultimoPuntoPlano = new Vector3(sprite.position.x, transform.position.y, sprite.position.z);
+    }
+
+    private Vector3 CalcularOffsetHover()
+    {
+        float tiempo = Time.time + shakeSeed;
+        float hoverY = liftHeight + Mathf.Sin(tiempo * hoverShakeFrequency) * hoverShakeAmplitude;
+        float hoverX = Mathf.Sin(tiempo * hoverShakeFrequency * 0.9f) * hoverShakeAmplitude * 0.5f;
+        float hoverZ = Mathf.Cos(tiempo * hoverShakeFrequency * 0.7f) * hoverShakeAmplitude * 0.5f;
+
+        return new Vector3(hoverX, hoverY, hoverZ);
+    }
+
+    private Quaternion CalcularRotacionHover()
+    {
+        float tiempo = Time.time + shakeSeed;
+        float tiltX = Mathf.Sin(tiempo * tiltFrequency) * tiltAmplitude;
+        float tiltZ = Mathf.Cos(tiempo * tiltFrequency * 0.8f) * tiltAmplitude * 0.5f;
+
+        return rotationAntesDeArrastrar * Quaternion.Euler(tiltX, 0f, tiltZ);
+    }
+
+    private IEnumerator DropAndImpact(Transform sprite, Vector3 destino, Quaternion rotacionDestino)
+    {
+        Vector3 inicioPos = sprite.position;
+        Quaternion inicioRot = sprite.rotation;
+        float duracion = Mathf.Max(0.01f, dropDuration);
+        float tiempo = 0f;
+
+        while (tiempo < duracion)
+        {
+            tiempo += Time.deltaTime;
+            float t = Mathf.Clamp01(tiempo / duracion);
+            float eased = 1f - Mathf.Pow(1f - t, 3f);
+
+            Vector3 nuevaPos = Vector3.Lerp(inicioPos, destino, eased);
+            nuevaPos.y -= Mathf.Sin(t * Mathf.PI) * hoverShakeAmplitude * 0.5f;
+
+            sprite.position = nuevaPos;
+            sprite.rotation = Quaternion.Slerp(inicioRot, rotacionDestino, eased);
+            yield return null;
+        }
+
+        sprite.position = destino;
+        sprite.rotation = rotacionDestino;
+
+        if (dropParticlesPrefab != null)
+        {
+            ParticleSystem ps = Instantiate(dropParticlesPrefab, destino, Quaternion.identity);
+            ps.Play();
+            var main = ps.main;
+            float lifetime = main.duration + main.startLifetime.constantMax;
+            Destroy(ps.gameObject, lifetime);
+        }
+
+        dropCoroutine = null;
     }
 
     void OnDrawGizmosSelected()
