@@ -23,7 +23,7 @@ public class LateralScroll : MonoBehaviour
 
     void Update()
     {
-        if (Input.GetMouseButtonDown(0) && PrefabManagerSingleton.Instance.HayObjetoSeleccionado() == false) // Si se pulsa la pantalla (o el boton izquierdo del raton)
+        if (Input.GetMouseButtonDown(0) && PrefabManagerSingleton.Instance != null && PrefabManagerSingleton.Instance.HayObjetoSeleccionado() == false) // Si se pulsa la pantalla (o el boton izquierdo del raton)
         {
             isDragging = true;
             lastTouchPosition = Input.mousePosition; // Guardamos la posicion inicial del toque
