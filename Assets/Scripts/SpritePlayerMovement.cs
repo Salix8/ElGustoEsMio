@@ -188,6 +188,7 @@ public class SpritePlayerMovement : MonoBehaviour
     {
         ConfigurarSpriteSeleccionado(hit.transform, hit.point);
         Debug.Log($"Sprite seleccionado: {spriteSeleccionado.name} | offset {offset}");
+        PrefabManagerSingleton.Instance.SetSeleccionado(spriteSeleccionado.gameObject);
     }
 
     private void ConfigurarSpriteSeleccionado(Transform sprite, Vector3 contacto)

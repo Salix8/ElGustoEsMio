@@ -20,6 +20,19 @@ public class PrefabManagerSingleton : MonoBehaviour
         DontDestroyOnLoad(gameObject);
     }
 
+    private void Update()
+    {
+        /*if (Input.GetMouseButtonDown(0))
+        {
+            Ray rayo = camara.ScreenPointToRay(Input.mousePosition);
+
+        }*/
+        if (Input.GetMouseButtonUp(0) && selectedObject != null)
+        {
+            selectedObject = null;
+        }
+    }
+
     public void SetSeleccionado(GameObject obj)
     {
         selectedObject = obj;
