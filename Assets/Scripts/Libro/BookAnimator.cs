@@ -34,10 +34,15 @@ public class BookAnimator : MonoBehaviour
         else
             targetPosition = new Vector2(hiddenXPosition, bookPanel.anchoredPosition.y);
 
-        bookPanel.anchoredPosition = Vector2.Lerp(bookPanel.anchoredPosition, targetPosition, animationSpeed * Time.deltaTime);
+        //bookPanel.anchoredPosition = Vector2.Lerp(bookPanel.anchoredPosition, targetPosition, animationSpeed * Time.deltaTime);
+        bookPanel.anchoredPosition = Vector2.Lerp(bookPanel.anchoredPosition, targetPosition, animationSpeed * Time.unscaledDeltaTime);
     }
     public void ToggleBook()
     {
         isBookShown = !isBookShown; // Invierte el estado (si estaba mostrado, se oculta, y viceversa)
+        if (isBookShown)
+            TimeManager.Instance.PauseGame();
+        else
+            TimeManager.Instance.ResumeGame();
     }
 }

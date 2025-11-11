@@ -177,8 +177,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::QuestItemUI
   taskText: {fileID: 6018042452885676058}
   taskToggle: {fileID: 295470456459946228}
-  pendingColor: {r: 1, g: 0.6470588, b: 0, a: 1}
-  completedColor: {r: 0, g: 1, b: 0, a: 1}
+  pendingColor: {r: 0, g: 0, b: 0, a: 1}
+  completedColor: {r: 0.3457636, g: 0.3962264, b: 0.3457636, a: 1}
 --- !u!1 &1582851495163993725
 GameObject:
   m_ObjectHideFlags: 0

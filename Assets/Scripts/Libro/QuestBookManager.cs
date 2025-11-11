@@ -34,8 +34,8 @@ public class QuestBookManager : MonoBehaviour
             Debug.Log("No hay misiones. Creando misiones de prueba.");
             allQuests = new List<QuestTask>();
             allQuests.Add(new QuestTask("Encuentra la llave dorada"));
-            allQuests.Add(new QuestTask("Habla con el herrero"));
-            allQuests.Add(new QuestTask("Derrota a 5 slimes"));
+            allQuests.Add(new QuestTask("Encuentra la puerta que hay cerca del monte del destino, donde frodo perdio la capa de los elfos"));
+            allQuests.Add(new QuestTask("Derrota Sauron"));
 
             allQuests[1].isCompleted = true;
         }

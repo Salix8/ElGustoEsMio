@@ -63,6 +63,9 @@ public class SpritePlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (TimeManager.Instance != null && TimeManager.Instance.IsPaused())
+            return; // No hacer scroll si el juego está pausado
+
         // DOWN: intentamos seleccionar
         if (Input.GetMouseButtonDown(0))
         {

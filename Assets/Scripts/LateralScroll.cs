@@ -23,6 +23,9 @@ public class LateralScroll : MonoBehaviour
 
     void Update()
     {
+        if (TimeManager.Instance != null && TimeManager.Instance.IsPaused())
+            return; // No hacer scroll si el juego está pausado
+
         if (Input.GetMouseButtonDown(0) && PrefabManagerSingleton.Instance != null && PrefabManagerSingleton.Instance.HayObjetoSeleccionado() == false) // Si se pulsa la pantalla (o el boton izquierdo del raton)
         {
             isDragging = true;
