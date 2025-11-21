@@ -1,32 +1,36 @@
 using UnityEngine;
+using System.Collections; // Necesario para Corutinas
 
 /// <summary>
 /// Este script va en el prefab de la Carne.
-/// Gestiona su estado de cocciÛn, cambia de color y calcula la puntuaciÛn.
+/// Gestiona su estado de cocci√≥n, cambia de color y calcula la puntuaci√≥n.
 /// </summary>
 [RequireComponent(typeof(Renderer))] // Necesitamos un Renderer para cambiar el color
 public class Meat : MonoBehaviour
 {
-    [Header("Estado de CocciÛn")]
+    [Header("Estado de Cocci√≥n")]
     public float cookingProgressSideA = 0f;
     public float cookingProgressSideB = 0f;
     public bool isSideADown = true;
 
-    [Header("Par·metros de CocciÛn")]
-    [Tooltip("El tiempo/progreso ideal de cocciÛn para un 10/10.")]
+    [Header("Par√°metros de Cocci√≥n")]
+    [Tooltip("El tiempo/progreso ideal de cocci√≥n para un 10/10.")]
     public float idealCookProgress = 5f;
-    [Tooltip("El error m·ximo antes de que la puntuaciÛn sea 0 (ej: 5s = 0 error, 10s = 5 error).")]
+    [Tooltip("El error m√°ximo antes de que la puntuaci√≥n sea 0 (ej: 5s = 0 error, 10s = 5 error).")]
     public float maxError = 5f;
 
     [Header("Visuales")]
     public Color rawColor = Color.red;
-    public Color perfectColor = new Color(0.6f, 0.2f, 0f); // MarrÛn
+    public Color perfectColor = new Color(0.6f, 0.2f, 0f); // Marr√≥n
     public Color burntColor = Color.black;
 
     // Variables privadas
     private bool isCooking = false;
     private float currentGrillPower = 1f;
     private Material meatMaterial;
+    private float logTimer = 0f;
+    private const float LOG_INTERVAL = 1.0f; // Loguear cada segundo
+    private bool isFlipping = false; // Para evitar voltear m√∫ltiples veces
 
     void Awake()
     {
@@ -37,13 +41,10 @@ public class Meat : MonoBehaviour
 
     void Update()
     {
-        // Si no estamos en la plancha, no hacemos nada
         if (!isCooking) return;
 
-        // Tu lÛgica: DeltaTime * Potencia
         float cookAmount = Time.deltaTime * currentGrillPower;
 
-        // Cocinar el lado que estÈ boca abajo
         if (isSideADown)
         {
             cookingProgressSideA += cookAmount;
@@ -53,94 +54,139 @@ public class Meat : MonoBehaviour
             cookingProgressSideB += cookAmount;
         }
 
-        // Actualizar el color en tiempo real
         UpdateColor();
+
+        logTimer += Time.deltaTime;
+        if (logTimer >= LOG_INTERVAL)
+        {
+            logTimer = 0f;
+            float currentSideProgress = isSideADown ? cookingProgressSideA : cookingProgressSideB;
+            string currentSide = isSideADown ? "Lado A" : "Lado B";
+            float percentage = (currentSideProgress / idealCookProgress) * 100f;
+            Debug.Log($"{currentSide} cocin√°ndose. Progreso: {percentage.ToString("F0")}% del punto ideal.");
+        }
     }
 
-    /// <summary>
-    /// Llamado por la plancha (Grill.cs)
-    /// </summary>
     public void StartCooking(float power)
     {
         isCooking = true;
         currentGrillPower = power;
     }
 
-    /// <summary>
-    /// Llamado por la plancha (Grill.cs)
-    /// </summary>
     public void StopCooking()
     {
         isCooking = false;
     }
 
     /// <summary>
-    /// Esta funciÛn p˙blica ser· llamada por el script Tappable.
+    /// Inicia la corutina de la animaci√≥n de volteo.
     /// </summary>
     public void Flip()
     {
-        // Solo podemos dar la vuelta si estamos cocinando
-        if (!isCooking) return;
-
-        isSideADown = !isSideADown;
-        Debug.Log("Carne volteada!");
-
-        // Al voltear, actualizamos el color al del nuevo lado
-        UpdateColor();
+        // No voltear si no se est√° cocinando o si ya se est√° volteando.
+        if (!isCooking || isFlipping) return;
+        StartCoroutine(FlipAnimationCoroutine());
     }
 
     /// <summary>
-    /// Actualiza el color del material bas·ndose en la cocciÛn del lado actual.
-    /// Esta es una alternativa m·s simple que un shader.
+    /// Corutina que anima el volteo de la carne.
+    /// </summary>
+    private IEnumerator FlipAnimationCoroutine()
+    {
+        isFlipping = true;
+
+        // 1. Espera inicial
+        yield return new WaitForSeconds(0.5f);
+
+        // 2. Preparar variables para la animaci√≥n
+        float duration = 0.5f; // Duraci√≥n total del movimiento de volteo
+        Vector3 startPosition = transform.position;
+        Quaternion startRotation = transform.rotation;
+        Vector3 peakPosition = startPosition + new Vector3(0, 0.75f, 0); // Altura del salto
+        Quaternion endRotation = startRotation * Quaternion.Euler(180, 0, 0); // Rotaci√≥n de 180 grados en el eje X local
+
+        // 3. Voltear la l√≥gica y actualizar el color INMEDIATAMENTE
+        isSideADown = !isSideADown;
+        UpdateColor();
+        Debug.Log("Carne volteada!");
+
+        // 4. Animar el movimiento y la rotaci√≥n
+        float elapsedTime = 0f;
+        while (elapsedTime < duration)
+        {
+            elapsedTime += Time.deltaTime;
+            float t = elapsedTime / duration; // Progreso de la animaci√≥n (0 a 1)
+
+            // Interpolar la posici√≥n en un arco (sube y luego baja)
+            if (t < 0.5f)
+            {
+                // Mitad de subida
+                transform.position = Vector3.Lerp(startPosition, peakPosition, t * 2);
+            }
+            else
+            {
+                // Mitad de bajada
+                transform.position = Vector3.Lerp(peakPosition, startPosition, (t - 0.5f) * 2);
+            }
+
+            // Interpolar la rotaci√≥n suavemente durante toda la animaci√≥n
+            transform.rotation = Quaternion.Slerp(startRotation, endRotation, t);
+            
+            yield return null; // Esperar al siguiente frame
+        }
+
+        // 5. Asegurar el estado final para evitar imprecisiones
+        transform.position = startPosition;
+        transform.rotation = endRotation;
+        
+        isFlipping = false; // Terminar el volteo
+    }
+    
+    /// <summary>
+    /// Actualiza el color del material bas√°ndose en la cocci√≥n del lado actual.
     /// </summary>
     void UpdateColor()
     {
-        // Coger el progreso del lado que se est· cocinando actualmente
         float currentSideProgress = isSideADown ? cookingProgressSideA : cookingProgressSideB;
 
         if (currentSideProgress < idealCookProgress)
         {
-            // Lerp de Crudo a Perfecto
             float t = Mathf.InverseLerp(0, idealCookProgress, currentSideProgress);
             meatMaterial.color = Color.Lerp(rawColor, perfectColor, t);
         }
         else
         {
-            // Lerp de Perfecto a Quemado
             float t = Mathf.InverseLerp(idealCookProgress, idealCookProgress + maxError, currentSideProgress);
             meatMaterial.color = Color.Lerp(perfectColor, burntColor, t);
         }
     }
 
     /// <summary>
-    /// Llamado por el plato (Plate.cs) para obtener la puntuaciÛn final.
+    /// Llamado por el plato (Plate.cs) para obtener la puntuaci√≥n final.
     /// </summary>
     public float CalculateFinalScore()
     {
-        // Calculamos la puntuaciÛn de cada lado por separado
+        // Calculamos la puntuaci√≥n de cada lado por separado
         float scoreA = CalculateSideScore(cookingProgressSideA);
         float scoreB = CalculateSideScore(cookingProgressSideB);
 
-        // La puntuaciÛn final es la media de los dos lados
+        // La puntuaci√≥n final es la media de los dos lados
         float finalScore = (scoreA + scoreB) / 2f;
         return finalScore;
     }
 
     /// <summary>
-    /// Calcula la puntuaciÛn (de 2 a 10) para un solo lado.
+    /// Calcula la puntuaci√≥n (de 2 a 10) para un solo lado.
     /// </summary>
     private float CalculateSideScore(float progress)
     {
-        // 1. Calcular el error (cu·n lejos estamos del ideal)
-        // Ej: Si progress=5 (ideal), error=0. Si progress=1, error=4. Si progress=10, error=5.
+        // 1. Calcular el error (cu√°n lejos estamos del ideal)
         float error = Mathf.Abs(progress - idealCookProgress);
 
         // 2. Normalizar el error (convertir el error a un valor de 0 a 1)
-        // Si error=0, t=0. Si error=5 (maxError), t=1.
         float t = Mathf.InverseLerp(0, maxError, error);
 
-        // 3. Interpolar la puntuaciÛn
-        // Si t=0 (sin error), puntuaciÛn=10. Si t=1 (error m·ximo), puntuaciÛn=2.
+        // 3. Interpolar la puntuaci√≥n
         float score = Mathf.Lerp(10, 2, t);
 
         return score;

@@ -3,43 +3,74 @@ using UnityEngine.SceneManagement; // Necesario para recargar la escena
 using UnityEngine.UI; // Necesario para Button y Slider
 
 /// <summary>
-/// El cerebro del minijuego. Conecta la UI (Slider, Bot�n)
-/// con los objetos del juego (Plancha).
+/// El cerebro del minijuego. Conecta la UI (Slider, Botón)
+/// con los objetos del juego (Plancha) y gestiona estados globales como el "modo espátula".
 /// </summary>
 public class GrillManager : MonoBehaviour
 {
+    // --- SINGLETON ---
+    public static GrillManager Instance { get; private set; }
+
     [Header("Referencias de Escena")]
-    [Tooltip("Arrastra aqu� el objeto de la plancha que tiene el script 'Grill.cs'.")]
+    [Tooltip("Arrastra aquí el objeto de la plancha que tiene el script 'Grill.cs'.")]
     public Grill mainGrill;
 
     [Header("Referencias de UI")]
-    [Tooltip("Arrastra aqu� el bot�n de 'Repetir' del Canvas.")]
+    [Tooltip("Arrastra aquí el botón de 'Repetir' del Canvas.")]
     public Button retryButton;
-
-    [Tooltip("Arrastra aqu� el Slider de 'Potencia' del Canvas.")]
+    [Tooltip("Arrastra aquí el Slider de 'Potencia' del Canvas.")]
     public Slider powerSlider;
+    [Tooltip("Arrastra aquí el nuevo botón 'Espátula' del Canvas.")]
+    public Button spatulaButton; // Nuevo botón para la espátula
+
+    [Header("Estado del Juego")]
+    public bool isSpatulaModeActive = false;
+
+    void Awake()
+    {
+        // Lógica del Singleton
+        if (Instance != null && Instance != this)
+        {
+            Destroy(this.gameObject);
+        }
+        else
+        {
+            Instance = this;
+        }
+    }
 
     void Start()
     {
         // 1. Conectar los listeners de la UI
         if (retryButton != null)
         {
-            // Cuando se haga clic en el bot�n, llama a la funci�n 'RetryMinigame'
             retryButton.onClick.AddListener(RetryMinigame);
         }
 
         if (powerSlider != null)
         {
-            // Cuando el valor del slider cambie, llama a 'SetGrillPower'
             powerSlider.onValueChanged.AddListener(SetGrillPower);
+            SetGrillPower(powerSlider.value); // Establecer la potencia inicial
+        }
 
-            // 2. Establecer la potencia inicial
-            SetGrillPower(powerSlider.value);
+        if (spatulaButton != null)
+        {
+            spatulaButton.onClick.AddListener(EnterSpatulaMode);
         }
     }
 
     /// <summary>
-    /// Esta funci�n es llamada por el Slider de la UI.
+    /// Activa el modo espátula. El próximo clic en una carne la volteará.
+    /// </summary>
+    public void EnterSpatulaMode()
+    {
+        isSpatulaModeActive = true;
+        Debug.Log("Modo Espátula ACTIVADO. Haz clic en una hamburguesa para voltearla.");
+        // Aquí se podría cambiar el cursor o dar feedback visual
+    }
+
+    /// <summary>
+    /// Esta función es llamada por el Slider de la UI.
     /// Comunica la nueva potencia a la plancha.
     /// </summary>
     public void SetGrillPower(float newPower)
@@ -51,12 +82,12 @@ public class GrillManager : MonoBehaviour
     }
 
     /// <summary>
-    /// Esta funci�n es llamada por el Bot�n de Repetir.
+    /// Esta función es llamada por el Botón de Repetir.
     /// Recarga la escena actual.
     /// </summary>
     public void RetryMinigame()
     {
-        // Recarga la escena en la que est�s actualmente
+        // Recarga la escena en la que estás actualmente
         SceneManager.LoadScene(SceneManager.GetActiveScene().name);
     }
 }

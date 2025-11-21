@@ -3,80 +3,90 @@ using UnityEngine.Events; // Necesario para UnityEvent
 
 /// <summary>
 /// Un script reutilizable que permite que un objeto con Rigidbody
-/// sea arrastrado con el ratÛn y que detecte un "Tap".
-/// Distingue entre un clic corto (Tap) y un clic largo (Drag).
+/// sea arrastrado con el rat√≥n. La acci√≥n de 'Tap' se gestiona
+/// a trav√©s del GrillManager en "modo esp√°tula".
 /// </summary>
 [RequireComponent(typeof(Rigidbody))]
 public class DraggableAndTappable : MonoBehaviour
 {
 	[Header("Eventos")]
-	[Tooltip("Este evento se disparar· cuando se haga un 'Tap' (clic corto).")]
+	[Tooltip("Este evento se disparar√° cuando el objeto sea 'flipeado' con la esp√°tula.")]
 	public UnityEvent OnTap;
 
-	[Header("ConfiguraciÛn")]
-	[Tooltip("El tiempo m·ximo (en segundos) para que un clic sea considerado 'Tap'.")]
-	public float tapThreshold = 0.25f;
+	[Header("Configuraci√≥n")]
+	[Tooltip("Cu√°nto se eleva el objeto al ser arrastrado.")]
+	public Vector3 liftOffset = new Vector3(0, 0.2f, 0);
 
 	// Variables privadas de control
 	private Rigidbody rb;
 	private Camera mainCamera;
 	private float zCoord;
-	private float mouseDownTime;
 	private bool isDragging = false;
-	private Vector3 mouseStartPos;
-	private Vector3 objStartPos;
+	private Vector3 originalPosition;
+	private bool didFlipThisClick = false; // Flag para solucionar el bug
 
 	void Start()
 	{
 		rb = GetComponent<Rigidbody>();
-		mainCamera = Camera.main; // Cachear la c·mara principal
+		mainCamera = Camera.main;
 	}
 
 	void OnMouseDown()
 	{
-		// Guardar el momento y la posiciÛn del clic
-		mouseDownTime = Time.time;
-		isDragging = false;
+		didFlipThisClick = false; // Reiniciar el flag en cada clic
 
-		// Calcular la coordenada Z para el movimiento del ratÛn
+		// Primero, comprobar si estamos en modo esp√°tula
+		if (GrillManager.Instance != null && GrillManager.Instance.isSpatulaModeActive)
+		{
+			didFlipThisClick = true; // Marcamos que este clic fue para voltear
+
+			if (OnTap != null)
+			{
+				OnTap.Invoke(); // Llama a Meat.Flip()
+			}
+
+			GrillManager.Instance.isSpatulaModeActive = false;
+			Debug.Log("Hamburguesa volteada. Modo Esp√°tula DESACTIVADO.");
+			return; 
+		}
+
+		// --- Si NO estamos en modo esp√°tula, procedemos con el arrastre normal ---
+		isDragging = false;
+		originalPosition = transform.position;
+		transform.position += liftOffset;
 		zCoord = mainCamera.WorldToScreenPoint(transform.position).z;
 	}
 
 	void OnMouseDrag()
 	{
-		// Si se mueve el ratÛn, es un 'Drag'
-		isDragging = true;
+		if (didFlipThisClick) return; // Si hemos flipeado, no arrastrar
 
-		// Hacemos el Rigidbody kinem·tico para que no choque mientras lo movemos
+		isDragging = true;
 		rb.isKinematic = true;
 
-		// Convertir la posiciÛn del ratÛn en pantalla a posiciÛn en el mundo
 		Vector3 mousePos = Input.mousePosition;
 		mousePos.z = zCoord;
-
 		transform.position = mainCamera.ScreenToWorldPoint(mousePos);
 	}
 
 	void OnMouseUp()
 	{
+		// Si este clic fue para voltear, no hacemos nada al levantar el rat√≥n.
+		if (didFlipThisClick)
+		{
+			return;
+		}
+
 		if (isDragging)
-		// Si est·bamos arrastrando, devolvemos el Rigidbody a la normalidad
 		{
 			rb.isKinematic = false;
 		}
-
 		else
 		{
-			// Si NO est·bamos arrastrando (fue un clic est·tico)...
-			// ...comprobamos si fue un 'Tap' (suficientemente r·pido)
-			if (Time.time - mouseDownTime <= tapThreshold)
-			{
-				// °Fue un Tap! Disparamos el evento.
-				if (OnTap != null)
-				{
-					OnTap.Invoke();
-				}
-			}
+			// Si no hubo arrastre, devolvemos el objeto a su posici√≥n.
+			transform.position = originalPosition;
 		}
+
+		isDragging = false;
 	}
 }
