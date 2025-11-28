@@ -27,8 +27,13 @@ public class PintarSobreCanvas : MonoBehaviour
     Vector2 lastLocalPos;
     bool drawing = false;
 
+    [Header("Zonas de corte")]
+    public RectTransform[] cutZones;   // Asigna Zone1, Zone2, Zone3 aquí en el Inspector
+
+    bool[] zoneEntered;  // Para evitar repetir logs
     void Start()
     {
+        zoneEntered = new bool[cutZones.Length];
         if (drawRawImage == null || foodImage == null)
         {
             Debug.LogError("Asignar drawRawImage y foodImage en el inspector.");
@@ -83,6 +88,7 @@ public class PintarSobreCanvas : MonoBehaviour
 
             if (PointOverDrawRect(screenPos, out local))
             {
+                CheckCutZones(local);
                 if (IsInsideFoodAlpha(local))
                 {
                     DrawBetween(lastLocalPos, local);
@@ -99,6 +105,7 @@ public class PintarSobreCanvas : MonoBehaviour
 
             if (PointOverDrawRect(mousePos, out local))
             {
+                CheckCutZones(local);
                 if (IsInsideFoodAlpha(local))
                 {
                     DrawBetween(lastLocalPos, local);
@@ -106,6 +113,39 @@ public class PintarSobreCanvas : MonoBehaviour
 
                 // lastLocalPos SIEMPRE se actualiza
                 lastLocalPos = local;
+            }
+        }
+    }
+
+    void CheckCutZones(Vector2 localPointInDraw)
+    {
+        for (int i = 0; i < cutZones.Length; i++)
+        {
+            RectTransform zone = cutZones[i];
+
+            // Convertimos la posición del punto (en coord del drawRect)
+            // al espacio local de cada zona
+            Vector2 zoneLocalPoint;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                zone,
+                RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPointInDraw)),
+                null,
+                out zoneLocalPoint
+            );
+
+            Rect r = zone.rect;
+
+            if (r.Contains(zoneLocalPoint))
+            {
+                if (!zoneEntered[i])
+                {
+                    zoneEntered[i] = true;
+                    Debug.Log("Entró en zona: " + zone.name);
+                }
+            }
+            else
+            {
+                zoneEntered[i] = false;
             }
         }
     }
