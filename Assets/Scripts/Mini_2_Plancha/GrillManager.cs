@@ -24,7 +24,7 @@ public class GrillManager : MonoBehaviour
     [Tooltip("Ángulo en grados que se levantará la espátula para 'empujar' la carne.")]
     public float spatulaLiftAngle = 15.0f;
     [Tooltip("Duración en segundos de la animación de levantar y bajar la espátula.")]
-    public float spatulaLiftDuration = 0.2f;
+    public float spatulaLiftDuration = 0.15f;
 
 
     [Header("Referencias de UI")]
@@ -160,8 +160,9 @@ public class GrillManager : MonoBehaviour
             yield return null;
         }
 
-        // 4b. Esperar a que la carne casi termine de girar (la anim de la carne dura ~1s)
-        yield return new WaitForSeconds(0.6f); 
+        // 4b. Esperar a que la carne termine de girar (la anim de la carne dura 0.5s)
+        //yield return new WaitForSeconds(0.5f); 
+
 
         // 4c. Animar hacia abajo
         liftAnimTime = 0f;

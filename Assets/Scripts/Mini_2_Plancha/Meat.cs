@@ -95,22 +95,19 @@ public class Meat : MonoBehaviour
     {
         isFlipping = true;
 
-        // 1. Espera inicial
-        yield return new WaitForSeconds(0.5f);
-
-        // 2. Preparar variables para la animación
+        // 1. Preparar variables para la animación (la espera inicial se ha eliminado para sincronizar con la espátula)
         float duration = 0.5f; // Duración total del movimiento de volteo
         Vector3 startPosition = transform.position;
         Quaternion startRotation = transform.rotation;
         Vector3 peakPosition = startPosition + new Vector3(0, 0.75f, 0); // Altura del salto
         Quaternion endRotation = startRotation * Quaternion.Euler(180, 0, 0); // Rotación de 180 grados en el eje X local
 
-        // 3. Voltear la lógica y actualizar el color INMEDIATAMENTE
+        // 2. Voltear la lógica y actualizar el color INMEDIATAMENTE
         isSideADown = !isSideADown;
         UpdateColor();
         Debug.Log("Carne volteada!");
 
-        // 4. Animar el movimiento y la rotación
+        // 3. Animar el movimiento y la rotación
         float elapsedTime = 0f;
         while (elapsedTime < duration)
         {
