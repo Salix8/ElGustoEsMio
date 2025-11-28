@@ -737,6 +737,10 @@ MonoBehaviour:
   textureResolution: 1024
   brushSize: 10
   applyEveryNFrames: 2
+  cutZones:
+  - {fileID: 423418332}
+  - {fileID: 666500859}
+  - {fileID: 1100825384}
 --- !u!114 &791264970
 MonoBehaviour:
   m_ObjectHideFlags: 0
