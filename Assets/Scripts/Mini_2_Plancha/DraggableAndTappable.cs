@@ -20,6 +20,7 @@ public class DraggableAndTappable : MonoBehaviour
 	private bool isDragging = false;
 	private Vector3 originalPosition;
 	private Meat meatComponent;
+	private bool flipWasInitiated = false; // BUGFIX: Para no arrastrar si se ha iniciado un volteo.
 
 	void Start()
 	{
@@ -30,10 +31,15 @@ public class DraggableAndTappable : MonoBehaviour
 
 	void OnMouseDown()
 	{
+		// Por defecto, no se ha iniciado un volteo.
+		flipWasInitiated = false;
+
 		// Primero, comprobar si estamos en modo espátula.
 		if (GrillManager.Instance != null && GrillManager.Instance.isSpatulaModeActive)
 		{
-			// Si es así, llamamos al GrillManager para que se encargue de la lógica de volteo.
+			// Si es así, marcamos que el volteo se ha iniciado.
+			flipWasInitiated = true;
+			// Llamamos al GrillManager para que se encargue de la lógica de volteo.
 			GrillManager.Instance.FlipMeatWithSpatula(meatComponent);
 			return; // Salimos para no iniciar el arrastre.
 		}
@@ -47,8 +53,8 @@ public class DraggableAndTappable : MonoBehaviour
 
 	void OnMouseDrag()
 	{
-		// Si no estamos en modo espátula, permitimos el arrastre.
-		if (GrillManager.Instance == null || !GrillManager.Instance.isSpatulaModeActive)
+		// Solo permitir el arrastre si NO se inició un volteo en este clic.
+		if (!flipWasInitiated)
 		{
 			isDragging = true;
 			rb.isKinematic = true;
@@ -61,19 +67,23 @@ public class DraggableAndTappable : MonoBehaviour
 
 	void OnMouseUp()
 	{
-		// Restaurar la física y el estado solo si no estábamos en modo espátula durante el clic
-		if (GrillManager.Instance == null || !GrillManager.Instance.isSpatulaModeActive)
+		// Si se inició un volteo, no hacemos nada aquí.
+		if (flipWasInitiated)
 		{
-			if (isDragging)
-			{
-				rb.isKinematic = false;
-			}
-			else
-			{
-				// Si no hubo arrastre, es un 'tap'.
-				// Revertimos el pequeño salto inicial.
-				transform.position = originalPosition;
-			}
+			flipWasInitiated = false; // Reseteamos para el próximo clic.
+			return;
+		}
+
+		// Si no, procedemos con la lógica normal de soltar el objeto.
+		if (isDragging)
+		{
+			rb.isKinematic = false;
+		}
+		else
+		{
+			// Si no hubo arrastre, es un 'tap'.
+			// Revertimos el pequeño salto inicial.
+			transform.position = originalPosition;
 		}
 		
 		// Se restaura el estado de 'no arrastre' al final de cualquier interacción.

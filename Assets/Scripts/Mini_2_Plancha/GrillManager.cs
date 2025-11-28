@@ -18,6 +18,15 @@ public class GrillManager : MonoBehaviour
     [Tooltip("Arrastra aquí un objeto vacío que marca la posición inicial/de reposo de la espátula.")]
     public Transform spatulaStartPosition;
 
+    [Header("Animación Espátula")]
+    [Tooltip("Distancia de offset para que la punta de la espátula (y no su centro) apunte a la carne. Ajústalo según el tamaño de tu espátula.")]
+    public float spatulaOffset = 0.5f;
+    [Tooltip("Ángulo en grados que se levantará la espátula para 'empujar' la carne.")]
+    public float spatulaLiftAngle = 15.0f;
+    [Tooltip("Duración en segundos de la animación de levantar y bajar la espátula.")]
+    public float spatulaLiftDuration = 0.2f;
+
+
     [Header("Referencias de UI")]
     [Tooltip("Arrastra aquí el botón de 'Repetir' del Canvas.")]
     public Button retryButton;
@@ -116,30 +125,58 @@ public class GrillManager : MonoBehaviour
             yield break;
         }
 
-        Vector3 targetPosition = targetMeat.transform.position;
+        // --- 1. Calcular la posición objetivo con el offset ---
+        Vector3 offset = -spatulaTransform.right * spatulaOffset;
+        Vector3 targetPosition = targetMeat.transform.position + offset;
+        
         float travelDuration = 0.7f;
         float elapsedTime = 0f;
 
-        // 2. Animar la espátula hacia la carne
+        // --- 2. Animar la espátula hacia la carne ---
         Debug.Log("Moviendo espátula hacia la carne...");
+        Vector3 initialSpatulaPos = spatulaTransform.position;
         while (elapsedTime < travelDuration)
         {
-            spatulaTransform.position = Vector3.Lerp(spatulaStartPosition.position, targetPosition, elapsedTime / travelDuration);
+            spatulaTransform.position = Vector3.Lerp(initialSpatulaPos, targetPosition, elapsedTime / travelDuration);
             elapsedTime += Time.deltaTime;
             yield return null;
         }
         spatulaTransform.position = targetPosition;
 
-        // 3. Llamar a la animación de volteo de la carne SÓLO DESPUÉS de que la espátula ha llegado
+        // --- 3. Llamar a la animación de volteo de la carne ---
         targetMeat.Flip();
 
-        // 4. Esperar a que la animación de la carne termine (aprox. 1s en total: 0.5s espera + 0.5s anim)
-        yield return new WaitForSeconds(1.0f);
+        // --- 4. Animación de "levantar" la espátula ---
+        Quaternion originalRotation = spatulaTransform.rotation;
+        // Rota sobre el eje Z local para dar un efecto de "cabeceo". Puedes cambiar el eje (X, Y, Z) y el signo del ángulo.
+        Quaternion liftedRotation = originalRotation * Quaternion.Euler(originalRotation.x, -spatulaLiftAngle, originalRotation.z);
 
-        // 5. Animar la espátula de vuelta a su posición inicial
+        // 4a. Animar hacia arriba
+        float liftAnimTime = 0f;
+        while (liftAnimTime < spatulaLiftDuration)
+        {
+            spatulaTransform.rotation = Quaternion.Slerp(originalRotation, liftedRotation, liftAnimTime / spatulaLiftDuration);
+            liftAnimTime += Time.deltaTime;
+            yield return null;
+        }
+
+        // 4b. Esperar a que la carne casi termine de girar (la anim de la carne dura ~1s)
+        yield return new WaitForSeconds(0.6f); 
+
+        // 4c. Animar hacia abajo
+        liftAnimTime = 0f;
+        while (liftAnimTime < spatulaLiftDuration)
+        {
+            spatulaTransform.rotation = Quaternion.Slerp(liftedRotation, originalRotation, liftAnimTime / spatulaLiftDuration);
+            liftAnimTime += Time.deltaTime;
+            yield return null;
+        }
+        spatulaTransform.rotation = originalRotation; // Asegurar la rotación final
+
+        // --- 5. Animar la espátula de vuelta a su posición inicial ---
         Debug.Log("Devolviendo espátula a su posición.");
         elapsedTime = 0f;
-        Vector3 currentSpatulaPos = spatulaTransform.position; // Usar la posición actual por si la carne se movió
+        Vector3 currentSpatulaPos = spatulaTransform.position;
         while (elapsedTime < travelDuration)
         {
             spatulaTransform.position = Vector3.Lerp(currentSpatulaPos, spatulaStartPosition.position, elapsedTime / travelDuration);
