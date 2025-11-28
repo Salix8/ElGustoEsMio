@@ -3,38 +3,35 @@ using UnityEngine;
 /// <summary>
 /// Este script va en la Plancha. Actúa como un trigger para
 /// decirle a la carne cuándo empezar y parar de cocinarse.
+/// También mantiene una referencia a la carne que tiene encima.
 /// </summary>
-[RequireComponent(typeof(Collider))] // Asegura que tengamos un collider
+[RequireComponent(typeof(Collider))]
 public class Grill : MonoBehaviour
 {
     [Tooltip("La potencia actual de la plancha, controlada por el GameManager.")]
     public float currentPower = 1f;
 
-    // Cuando la carne entra en la plancha
+    public Meat currentMeatOnGrill { get; private set; }
+
     private void OnTriggerEnter(Collider other)
     {
-        // Intentamos coger el script 'Meat' del objeto que ha entrado
         Meat meat = other.GetComponent<Meat>();
-
-        // Si es un trozo de carne...
         if (meat != null)
         {
-            // ...le decimos que empiece a cocinarse con nuestra potencia actual
+            // Guardar la referencia y empezar a cocinar
+            currentMeatOnGrill = meat;
             meat.StartCooking(currentPower);
         }
     }
 
-    // Cuando la carne sale de la plancha
     private void OnTriggerExit(Collider other)
     {
-        // Intentamos coger el script 'Meat' del objeto que ha salido
         Meat meat = other.GetComponent<Meat>();
-
-        // Si es un trozo de carne...
-        if (meat != null)
+        if (meat != null && meat == currentMeatOnGrill)
         {
-            // ...le decimos que deje de cocinarse
+            // Limpiar la referencia y parar de cocinar
             meat.StopCooking();
+            currentMeatOnGrill = null;
         }
     }
 }

@@ -83,8 +83,8 @@ public class Meat : MonoBehaviour
     /// </summary>
     public void Flip()
     {
-        // No voltear si no se está cocinando o si ya se está volteando.
-        if (!isCooking || isFlipping) return;
+        // No voltear si ya se está volteando.
+        if (isFlipping) return;
         StartCoroutine(FlipAnimationCoroutine());
     }
 
