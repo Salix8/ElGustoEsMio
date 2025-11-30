@@ -1,24 +1,94 @@
 using UnityEngine;
+using System.Collections.Generic;
+using System.Linq; // Necesario para usar .Average() en la lista
 
 /// <summary>
 /// Este script va en el Plato. Actúa como un trigger para
-/// recibir la carne cocinada, calcular su puntuación y destruirla.
+/// recibir todos los trozos de carne cocinada, calcular su puntuación media y almacenarla.
+/// El número de carnes esperadas se define dinámicamente desde el MeatSpawner.
 /// </summary>
 [RequireComponent(typeof(Collider))]
 public class Plate : MonoBehaviour
 {
+    [Header("Dependencias")]
+    [Tooltip("Arrastra aquí el objeto de la escena que contiene el script MeatSpawner.")]
+    public MeatSpawner meatSpawner;
+
+    private int expectedMeats;
+    private List<float> collectedScores = new List<float>();
+    private List<Meat> collectedMeatObjects = new List<Meat>();
+    private float averageScore = 0f;
+    private bool isFinalScoreCalculated = false;
+
+    void Start()
+    {
+        // Asigna dinámicamente el número de carnes esperadas.
+        if (meatSpawner != null)
+        {
+            expectedMeats = meatSpawner.meatSprites.Length;
+            Debug.Log($"Plato configurado para esperar {expectedMeats} trozos de carne.");
+        }
+        else
+        {
+            Debug.LogError("¡Error en Plate.cs! La referencia a 'meatSpawner' no está asignada en el Inspector.", this);
+            expectedMeats = 0; // Evita que el juego espere carnes si hay un error de configuración.
+        }
+    }
+
     private void OnTriggerEnter(Collider other)
     {
-        // Intentamos coger el script 'Meat'
-        Meat meat = other.GetComponent<Meat>();
-
-        if (meat == null)
+        // Si ya hemos calculado la puntuación final, o si no hay carnes esperadas, no hacemos nada más.
+        if (isFinalScoreCalculated || expectedMeats <= 0)
         {
             return;
         }
 
-        float finalScore = meat.CalculateFinalScore();
+        Meat meat = other.GetComponent<Meat>();
 
-        Debug.Log($"¡Carne entregada! Puntuación: {finalScore.ToString("F1")} / 10.0");
+        // Ignora si no es una carne o si ya ha sido contada.
+        if (meat == null || collectedMeatObjects.Contains(meat))
+        {
+            return;
+        }
+
+        float meatScore = meat.CalculateFinalScore();
+        collectedScores.Add(meatScore);
+        collectedMeatObjects.Add(meat);
+
+        Debug.Log($"¡Carne entregada! Puntuación individual: {meatScore.ToString("F1")}. Trozos en el plato: {collectedScores.Count}/{expectedMeats}");
+        
+        if (collectedScores.Count >= expectedMeats)
+        {
+            CalculateAverageScore();
+        }
+    }
+
+    private void CalculateAverageScore()
+    {
+        if (collectedScores.Count == 0)
+        {
+            averageScore = 0f;
+        }
+        else
+        {
+            averageScore = collectedScores.Average();
+        }
+        
+        isFinalScoreCalculated = true;
+        Debug.Log($"¡Puntuación final del plato completada! Puntuación media: {averageScore.ToString("F1")} / 10.0");
+    }
+
+    public float GetScore()
+    {
+        if (isFinalScoreCalculated)
+        {
+            return averageScore;
+        }
+        else
+        {
+            Debug.LogWarning("Se ha llamado a GetScore() pero la puntuación final aún no ha sido calculada.");
+            return 0f;
+        }
     }
 }
+
