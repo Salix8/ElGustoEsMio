@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using System.Collections;
 using System.Collections.Generic;
 
 public class PintarSobreCanvas : MonoBehaviour
@@ -31,6 +32,16 @@ public class PintarSobreCanvas : MonoBehaviour
     public RectTransform[] cutZones;   // Asigna Zone1, Zone2, Zone3 aquí en el Inspector
 
     bool[] zoneEntered;  // Para evitar repetir logs
+
+    [Header("Cambio de imagen")]
+    public List<GameObject> foodImages;   // Arrastra aquí todos los FoodImage duplicados
+    
+    int currentFoodIndex = 0;
+
+    [Header("Animación")]
+    public float slideDuration = 0.4f;
+    public float slideDistance = 800f;   // distancia horizontal de salida/entrada
+    bool isAnimating = false;
     void Start()
     {
         zoneEntered = new bool[cutZones.Length];
@@ -80,7 +91,7 @@ public class PintarSobreCanvas : MonoBehaviour
     {
         Vector2 local;
 
-        // TOUCH
+        // TOUCH (móvil/tablet)
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
@@ -89,31 +100,80 @@ public class PintarSobreCanvas : MonoBehaviour
             if (PointOverDrawRect(screenPos, out local))
             {
                 CheckCutZones(local);
+
+                if (touch.phase == TouchPhase.Began)
+                {
+                    // Nuevo trazo: no unir con el anterior
+                    lastLocalPos = local;
+                    drawing = true;
+
+                    // Punto inicial
+                    if (IsInsideFoodAlpha(local))
+                    {
+                        Vector2 uv = LocalToUV(local);
+                        Vector2 px = new Vector2(uv.x * drawTexture.width, uv.y * drawTexture.height);
+                        DrawBrushAt((int)px.x, (int)px.y);
+                    }
+                }
+                else if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) && drawing)
+                {
+                    if (IsInsideFoodAlpha(local))
+                    {
+                        DrawBetween(lastLocalPos, local);
+                    }
+                    lastLocalPos = local;
+                }
+                else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                {
+                    drawing = false;
+                }
+            }
+            else
+            {
+                // Toque fuera del área
+                if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                    drawing = false;
+            }
+
+            // No procesar ratón si hay toque
+            return;
+        }
+
+        // MOUSE (PC)
+        Vector2 mousePos = Input.mousePosition;
+        if (PointOverDrawRect(mousePos, out local))
+        {
+            CheckCutZones(local);
+
+            if (Input.GetMouseButtonDown(0))
+            {
+                lastLocalPos = local;
+                drawing = true;
+
+                if (IsInsideFoodAlpha(local))
+                {
+                    Vector2 uv = LocalToUV(local);
+                    Vector2 px = new Vector2(uv.x * drawTexture.width, uv.y * drawTexture.height);
+                    DrawBrushAt((int)px.x, (int)px.y);
+                }
+            }
+            else if (Input.GetMouseButton(0) && drawing)
+            {
                 if (IsInsideFoodAlpha(local))
                 {
                     DrawBetween(lastLocalPos, local);
                 }
-
-                // lastLocalPos SIEMPRE se actualiza
                 lastLocalPos = local;
+            }
+            else if (Input.GetMouseButtonUp(0))
+            {
+                drawing = false;
             }
         }
         else
         {
-            // MOUSE
-            Vector2 mousePos = Input.mousePosition;
-
-            if (PointOverDrawRect(mousePos, out local))
-            {
-                CheckCutZones(local);
-                if (IsInsideFoodAlpha(local))
-                {
-                    DrawBetween(lastLocalPos, local);
-                }
-
-                // lastLocalPos SIEMPRE se actualiza
-                lastLocalPos = local;
-            }
+            if (Input.GetMouseButtonUp(0))
+                drawing = false;
         }
     }
 
@@ -261,4 +321,80 @@ public class PintarSobreCanvas : MonoBehaviour
         drawTexture.SetPixels(arr);
         drawTexture.Apply();
     }
+
+    public void NextFoodImage()
+    {
+        if (isAnimating) return; // evita spamear el botón
+
+        if (foodImages == null || foodImages.Count == 0)
+        {
+            Debug.LogError("No hay foodImages asignadas.");
+            return;
+        }
+
+        StartCoroutine(SlideChangeCoroutine());
+    }
+
+    IEnumerator SlideChangeCoroutine()
+    {
+        isAnimating = true;
+
+        GameObject current = foodImages[currentFoodIndex];
+        RectTransform currentRect = current.GetComponent<RectTransform>();
+
+        // calcular siguiente índice
+        int nextIndex = currentFoodIndex + 1;
+        if (nextIndex >= foodImages.Count) nextIndex = 0;
+
+        GameObject next = foodImages[nextIndex];
+        RectTransform nextRect = next.GetComponent<RectTransform>();
+
+        // activar siguiente pero fuera de pantalla (derecha)
+        next.SetActive(true);
+
+        Vector2 originalPos = nextRect.anchoredPosition;
+        nextRect.anchoredPosition = new Vector2(slideDistance, originalPos.y);
+
+        float t = 0f;
+
+        // animación: actual → izquierda, siguiente → centro
+        while (t < slideDuration)
+        {
+            t += Time.deltaTime;
+            float p = t / slideDuration;
+            ClearTexture();
+            currentRect.anchoredPosition = Vector2.Lerp(
+                Vector2.zero,
+                new Vector2(-slideDistance, 0),
+                p);
+
+            nextRect.anchoredPosition = Vector2.Lerp(
+                new Vector2(slideDistance, 0),
+                Vector2.zero,
+                p);
+
+            yield return null;
+        }
+
+        // desactivar el anterior
+        current.SetActive(false);
+
+        // actualizar índice
+        currentFoodIndex = nextIndex;
+
+        // actualizar referencia foodImage
+        foodImage = next.GetComponent<Image>();
+
+        // actualizar datos del sprite
+        foodSprite = foodImage.sprite;
+        foodTexture = foodSprite.texture;
+        spriteRect = foodSprite.textureRect;
+        spritePivot = foodSprite.pivot;
+
+        // asegurar que queden alineados
+        nextRect.anchoredPosition = Vector2.zero;
+
+        isAnimating = false;
+    }
+
 }
