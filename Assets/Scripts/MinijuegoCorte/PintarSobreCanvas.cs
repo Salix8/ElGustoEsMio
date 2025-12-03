@@ -6,7 +6,7 @@ using System.Collections.Generic;
 public class PintarSobreCanvas : MonoBehaviour
 {
     [Header("Refs")]
-    public RawImage drawRawImage;     // RawImage donde pintamos
+    public RawImage drawRawImage;    // RawImage donde pintamos
     public Image foodImage;          // Image del alimento (sprite)
 
     [Header("Ajustes")]
@@ -17,34 +17,31 @@ public class PintarSobreCanvas : MonoBehaviour
     [Tooltip("Cuántos frames esperar entre Apply() para rendimiento (1 = cada frame)")]
     public int applyEveryNFrames = 2;
 
-    Texture2D drawTexture;           // textura donde dibujamos (alpha sobre transparente)
+    Texture2D drawTexture;
     RectTransform drawRect;
     Sprite foodSprite;
-    Texture2D foodTexture;           // textura original del sprite (debe ser readable)
-    Rect spriteRect;                 // rect del sprite dentro de la textura (pixels)
-    Vector2 spritePivot;             // pivot del sprite (0..1)
+    Texture2D foodTexture;
+    Rect spriteRect;
+    Vector2 spritePivot;
     int frameCounter = 0;
 
     Vector2 lastLocalPos;
     bool drawing = false;
 
     [Header("Zonas de corte")]
-    public RectTransform[] cutZones;   // Asigna Zone1, Zone2, Zone3 aquí en el Inspector
+    public RectTransform[] cutZones;
+    public RectTransform[] cutZonesIzq;
+    public RectTransform[] cutZonesDch;
+    bool[] zoneEntered;
+    bool[] zoneEnteredIzq;
+    bool[] zoneEnteredDch;
 
-    bool[] zoneEntered;  // Para evitar repetir logs
+    [Header("Estados del alimento")]
+    public List<Sprite> foodStates;  // Sprites del mismo alimento
+    int currentStateIndex = 0;
 
-    [Header("Cambio de imagen")]
-    public List<GameObject> foodImages;   // Arrastra aquí todos los FoodImage duplicados
-    
-    int currentFoodIndex = 0;
-
-    [Header("Animación")]
-    public float slideDuration = 0.4f;
-    public float slideDistance = 800f;   // distancia horizontal de salida/entrada
-    bool isAnimating = false;
     void Start()
     {
-        zoneEntered = new bool[cutZones.Length];
         if (drawRawImage == null || foodImage == null)
         {
             Debug.LogError("Asignar drawRawImage y foodImage en el inspector.");
@@ -54,12 +51,10 @@ public class PintarSobreCanvas : MonoBehaviour
 
         drawRect = drawRawImage.rectTransform;
 
-        // Crear textura transparente para pintar
         drawTexture = new Texture2D(textureResolution, textureResolution, TextureFormat.RGBA32, false);
         ClearTexture();
         drawRawImage.texture = drawTexture;
 
-        // Preparar datos del sprite (para comprobación de alpha)
         foodSprite = foodImage.sprite;
         if (foodSprite == null)
         {
@@ -68,17 +63,19 @@ public class PintarSobreCanvas : MonoBehaviour
             return;
         }
 
-        // Obtener la textura de la sprite (debe tener Read/Write enabled)
         foodTexture = foodSprite.texture;
-        spriteRect = foodSprite.textureRect; // rect dentro de la textura (en píxeles)
-        spritePivot = foodSprite.pivot;       // pivot en pixeles relativos al rect
+        spriteRect = foodSprite.textureRect;
+        spritePivot = foodSprite.pivot;
+
+        zoneEntered = new bool[cutZones.Length];
+        zoneEnteredIzq = new bool[cutZonesIzq.Length];
+        zoneEnteredDch = new bool[cutZonesDch.Length];
     }
 
     void Update()
     {
         HandleInput();
 
-        // Aplicar la textura cada N frames para mejor rendimiento
         frameCounter++;
         if (frameCounter >= applyEveryNFrames)
         {
@@ -91,57 +88,39 @@ public class PintarSobreCanvas : MonoBehaviour
     {
         Vector2 local;
 
-        // TOUCH (móvil/tablet)
+        // TOUCH
         if (Input.touchCount > 0)
         {
             Touch touch = Input.GetTouch(0);
-            Vector2 screenPos = touch.position;
-
-            if (PointOverDrawRect(screenPos, out local))
+            if (PointOverDrawRect(touch.position, out local))
             {
                 CheckCutZones(local);
 
                 if (touch.phase == TouchPhase.Began)
                 {
-                    // Nuevo trazo: no unir con el anterior
                     lastLocalPos = local;
                     drawing = true;
 
-                    // Punto inicial
                     if (IsInsideFoodAlpha(local))
-                    {
-                        Vector2 uv = LocalToUV(local);
-                        Vector2 px = new Vector2(uv.x * drawTexture.width, uv.y * drawTexture.height);
-                        DrawBrushAt((int)px.x, (int)px.y);
-                    }
+                        DrawAtLocal(local);
                 }
                 else if ((touch.phase == TouchPhase.Moved || touch.phase == TouchPhase.Stationary) && drawing)
                 {
                     if (IsInsideFoodAlpha(local))
-                    {
                         DrawBetween(lastLocalPos, local);
-                    }
                     lastLocalPos = local;
                 }
                 else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
-                {
-                    drawing = false;
-                }
-            }
-            else
-            {
-                // Toque fuera del área
-                if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
                     drawing = false;
             }
+            else if (touch.phase == TouchPhase.Ended || touch.phase == TouchPhase.Canceled)
+                drawing = false;
 
-            // No procesar ratón si hay toque
-            return;
+            return; // no procesar ratón si hay touch
         }
 
-        // MOUSE (PC)
-        Vector2 mousePos = Input.mousePosition;
-        if (PointOverDrawRect(mousePos, out local))
+        // MOUSE
+        if (PointOverDrawRect(Input.mousePosition, out local))
         {
             CheckCutZones(local);
 
@@ -149,128 +128,138 @@ public class PintarSobreCanvas : MonoBehaviour
             {
                 lastLocalPos = local;
                 drawing = true;
-
                 if (IsInsideFoodAlpha(local))
-                {
-                    Vector2 uv = LocalToUV(local);
-                    Vector2 px = new Vector2(uv.x * drawTexture.width, uv.y * drawTexture.height);
-                    DrawBrushAt((int)px.x, (int)px.y);
-                }
+                    DrawAtLocal(local);
             }
             else if (Input.GetMouseButton(0) && drawing)
             {
                 if (IsInsideFoodAlpha(local))
-                {
                     DrawBetween(lastLocalPos, local);
-                }
                 lastLocalPos = local;
             }
             else if (Input.GetMouseButtonUp(0))
-            {
-                drawing = false;
-            }
-        }
-        else
-        {
-            if (Input.GetMouseButtonUp(0))
                 drawing = false;
         }
+        else if (Input.GetMouseButtonUp(0))
+            drawing = false;
     }
 
-    void CheckCutZones(Vector2 localPointInDraw)
+    void CheckCutZones(Vector2 localPoint)
     {
+        // ZONAS NORMALES
         for (int i = 0; i < cutZones.Length; i++)
         {
-            RectTransform zone = cutZones[i];
-
-            // Convertimos la posición del punto (en coord del drawRect)
-            // al espacio local de cada zona
-            Vector2 zoneLocalPoint;
+            Vector2 zoneLocal;
             RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                zone,
-                RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPointInDraw)),
+                cutZones[i],
+                RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
                 null,
-                out zoneLocalPoint
+                out zoneLocal
             );
 
-            Rect r = zone.rect;
-
-            if (r.Contains(zoneLocalPoint))
-            {
-                if (!zoneEntered[i])
-                {
-                    zoneEntered[i] = true;
-                    Debug.Log("Entró en zona: " + zone.name);
-                }
-            }
+            if (cutZones[i].rect.Contains(zoneLocal))
+                zoneEntered[i] = true;
             else
-            {
                 zoneEntered[i] = false;
-            }
+        }
+
+        // IZQUIERDA
+        bool allLeft = true;
+        for (int i = 0; i < cutZonesIzq.Length; i++)
+        {
+            Vector2 zoneLocal;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                cutZonesIzq[i],
+                RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
+                null,
+                out zoneLocal
+            );
+
+            if (cutZonesIzq[i].rect.Contains(zoneLocal))
+                zoneEnteredIzq[i] = true;
+
+            if (!zoneEnteredIzq[i]) allLeft = false;
+        }
+        if (allLeft && cutZonesIzq.Length > 0)
+        {
+            NextFoodState();
+            ResetCutZonesFlags();
+        }
+
+        // DERECHA
+        bool allRight = true;
+        for (int i = 0; i < cutZonesDch.Length; i++)
+        {
+            Vector2 zoneLocal;
+            RectTransformUtility.ScreenPointToLocalPointInRectangle(
+                cutZonesDch[i],
+                RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
+                null,
+                out zoneLocal
+            );
+
+            if (cutZonesDch[i].rect.Contains(zoneLocal))
+                zoneEnteredDch[i] = true;
+
+            if (!zoneEnteredDch[i]) allRight = false;
+        }
+        if (allRight && cutZonesDch.Length > 0)
+        {
+            NextFoodState();
+            ResetCutZonesFlags();
         }
     }
 
+    void ResetCutZonesFlags()
+    {
+        for (int i = 0; i < zoneEnteredIzq.Length; i++)
+            zoneEnteredIzq[i] = false;
+        for (int i = 0; i < zoneEnteredDch.Length; i++)
+            zoneEnteredDch[i] = false;
+    }
 
     bool PointOverDrawRect(Vector2 screenPoint, out Vector2 localPoint)
     {
-        // Convierte screenPoint a punto local en rectTransform (coordenadas centradas)
         return RectTransformUtility.ScreenPointToLocalPointInRectangle(drawRect, screenPoint, null, out localPoint);
     }
 
-    // Comprueba si el punto local (en rectTransform coords) cae sobre el sprite (alpha > umbral)
     bool IsInsideFoodAlpha(Vector2 localPoint)
     {
-        // Convertimos punto local (-w/2..w/2, -h/2..h/2) a UV (0..1)
         Vector2 uv = LocalToUV(localPoint);
-
-        // Si el punto está fuera del RawImage, no pintamos
         if (uv.x < 0 || uv.x > 1 || uv.y < 0 || uv.y > 1)
             return false;
 
-        // Convertimos UV dentro del rectTransform a UV dentro del sprite
-        // foodSprite.textureRect = rectángulo que ocupa el sprite en la textura real
         Rect r = foodSprite.textureRect;
+        int px = Mathf.FloorToInt(r.x + uv.x * r.width);
+        int py = Mathf.FloorToInt(r.y + uv.y * r.height);
 
-        float texX = r.x + uv.x * r.width;
-        float texY = r.y + uv.y * r.height;
-
-        int px = Mathf.FloorToInt(texX);
-        int py = Mathf.FloorToInt(texY);
-
-        // Seguridad
         if (px < 0 || py < 0 || px >= foodTexture.width || py >= foodTexture.height)
             return false;
 
-        // Leer el pixel del sprite original
         Color c = foodTexture.GetPixel(px, py);
-
-        // Solo pintar en zonas con alpha real del PNG
         return c.a > 0.1f;
     }
 
-    // Convierte punto local (-w/2..w/2, -h/2..h/2) a UV 0..1 dentro del RawImage
     Vector2 LocalToUV(Vector2 local)
     {
         float w = drawRect.rect.width;
         float h = drawRect.rect.height;
-        float u = (local.x + w * 0.5f) / w;
-        float v = (local.y + h * 0.5f) / h;
-        return new Vector2(u, v);
+        return new Vector2((local.x + w * 0.5f) / w, (local.y + h * 0.5f) / h);
     }
 
-    // Dibuja una línea entre dos puntos locales (en coords de rectTransform)
-    void DrawBetween(Vector2 localStart, Vector2 localEnd)
+    void DrawBetween(Vector2 start, Vector2 end)
     {
-        Vector2 uvStart = LocalToUV(localStart);
-        Vector2 uvEnd = LocalToUV(localEnd);
-
-        Vector2 pxStart = new Vector2(uvStart.x * drawTexture.width, uvStart.y * drawTexture.height);
-        Vector2 pxEnd = new Vector2(uvEnd.x * drawTexture.width, uvEnd.y * drawTexture.height);
-
+        Vector2 pxStart = LocalToUV(start) * drawTexture.width;
+        Vector2 pxEnd = LocalToUV(end) * drawTexture.width;
         DrawLine((int)pxStart.x, (int)pxStart.y, (int)pxEnd.x, (int)pxEnd.y);
     }
 
-    // Dibuja línea con algoritmo simple y pinta círculos (grosor)
+    void DrawAtLocal(Vector2 local)
+    {
+        Vector2 uv = LocalToUV(local);
+        DrawBrushAt((int)(uv.x * drawTexture.width), (int)(uv.y * drawTexture.height));
+    }
+
     void DrawLine(int x0, int y0, int x1, int y1)
     {
         int dx = Mathf.Abs(x1 - x0);
@@ -282,7 +271,6 @@ public class PintarSobreCanvas : MonoBehaviour
         while (true)
         {
             DrawBrushAt(x0, y0);
-
             if (x0 == x1 && y0 == y1) break;
             int e2 = 2 * err;
             if (e2 > -dy) { err -= dy; x0 += sx; }
@@ -300,17 +288,9 @@ public class PintarSobreCanvas : MonoBehaviour
         int y1 = Mathf.Clamp(cy + r, 0, drawTexture.height - 1);
 
         for (int x = x0; x <= x1; x++)
-        {
             for (int y = y0; y <= y1; y++)
-            {
-                int dx = x - cx;
-                int dy = y - cy;
-                if (dx * dx + dy * dy <= sq)
-                {
+                if ((x - cx) * (x - cx) + (y - cy) * (y - cy) <= sq)
                     drawTexture.SetPixel(x, y, drawColor);
-                }
-            }
-        }
     }
 
     public void ClearTexture()
@@ -322,79 +302,27 @@ public class PintarSobreCanvas : MonoBehaviour
         drawTexture.Apply();
     }
 
-    public void NextFoodImage()
+    public void NextFoodState()
     {
-        if (isAnimating) return; // evita spamear el botón
+        if (foodStates == null || foodStates.Count == 0)
+            return;
 
-        if (foodImages == null || foodImages.Count == 0)
+        currentStateIndex++;
+        if (currentStateIndex >= foodStates.Count)
         {
-            Debug.LogError("No hay foodImages asignadas.");
+            Debug.Log("Alimento COMPLETADO");
+            currentStateIndex = 0;
+            ClearTexture(); // reset canvas para siguiente uso si se reactiva
             return;
         }
 
-        StartCoroutine(SlideChangeCoroutine());
-    }
+        foodSprite = foodStates[currentStateIndex];
+        foodImage.sprite = foodSprite;
 
-    IEnumerator SlideChangeCoroutine()
-    {
-        isAnimating = true;
-
-        GameObject current = foodImages[currentFoodIndex];
-        RectTransform currentRect = current.GetComponent<RectTransform>();
-
-        // calcular siguiente índice
-        int nextIndex = currentFoodIndex + 1;
-        if (nextIndex >= foodImages.Count) nextIndex = 0;
-
-        GameObject next = foodImages[nextIndex];
-        RectTransform nextRect = next.GetComponent<RectTransform>();
-
-        // activar siguiente pero fuera de pantalla (derecha)
-        next.SetActive(true);
-
-        Vector2 originalPos = nextRect.anchoredPosition;
-        nextRect.anchoredPosition = new Vector2(slideDistance, originalPos.y);
-
-        float t = 0f;
-
-        // animación: actual → izquierda, siguiente → centro
-        while (t < slideDuration)
-        {
-            t += Time.deltaTime;
-            float p = t / slideDuration;
-            ClearTexture();
-            currentRect.anchoredPosition = Vector2.Lerp(
-                Vector2.zero,
-                new Vector2(-slideDistance, 0),
-                p);
-
-            nextRect.anchoredPosition = Vector2.Lerp(
-                new Vector2(slideDistance, 0),
-                Vector2.zero,
-                p);
-
-            yield return null;
-        }
-
-        // desactivar el anterior
-        current.SetActive(false);
-
-        // actualizar índice
-        currentFoodIndex = nextIndex;
-
-        // actualizar referencia foodImage
-        foodImage = next.GetComponent<Image>();
-
-        // actualizar datos del sprite
-        foodSprite = foodImage.sprite;
         foodTexture = foodSprite.texture;
         spriteRect = foodSprite.textureRect;
         spritePivot = foodSprite.pivot;
 
-        // asegurar que queden alineados
-        nextRect.anchoredPosition = Vector2.zero;
-
-        isAnimating = false;
+        Debug.Log("Cambiado al estado: " + currentStateIndex);
     }
-
 }
