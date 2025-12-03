@@ -144,71 +144,85 @@ public class PintarSobreCanvas : MonoBehaviour
             drawing = false;
     }
 
-    void CheckCutZones(Vector2 localPoint)
+void CheckCutZones(Vector2 localPoint)
+{
+    // ===============================
+    // 1) ZONAS NORMALES → solo debug
+    // ===============================
+    for (int i = 0; i < cutZones.Length; i++)
     {
-        // ZONAS NORMALES
-        for (int i = 0; i < cutZones.Length; i++)
-        {
-            Vector2 zoneLocal;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                cutZones[i],
-                RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
-                null,
-                out zoneLocal
-            );
+        Vector2 zoneLocal;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            cutZones[i],
+            RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
+            null,
+            out zoneLocal
+        );
 
-            if (cutZones[i].rect.Contains(zoneLocal))
+        if (cutZones[i].rect.Contains(zoneLocal))
+        {
+            if (!zoneEntered[i])
+            {
                 zoneEntered[i] = true;
-            else
-                zoneEntered[i] = false;
+                Debug.Log("Entró en zona normal: " + cutZones[i].name);
+            }
         }
-
-        // IZQUIERDA
-        bool allLeft = true;
-        for (int i = 0; i < cutZonesIzq.Length; i++)
+        else
         {
-            Vector2 zoneLocal;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                cutZonesIzq[i],
-                RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
-                null,
-                out zoneLocal
-            );
-
-            if (cutZonesIzq[i].rect.Contains(zoneLocal))
-                zoneEnteredIzq[i] = true;
-
-            if (!zoneEnteredIzq[i]) allLeft = false;
-        }
-        if (allLeft && cutZonesIzq.Length > 0)
-        {
-            NextFoodState();
-            ResetCutZonesFlags();
-        }
-
-        // DERECHA
-        bool allRight = true;
-        for (int i = 0; i < cutZonesDch.Length; i++)
-        {
-            Vector2 zoneLocal;
-            RectTransformUtility.ScreenPointToLocalPointInRectangle(
-                cutZonesDch[i],
-                RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
-                null,
-                out zoneLocal
-            );
-
-            if (cutZonesDch[i].rect.Contains(zoneLocal))
-                zoneEnteredDch[i] = true;
-
-            if (!zoneEnteredDch[i]) allRight = false;
-        }
-        if (allRight && cutZonesDch.Length > 0)
-        {
-            NextFoodState();
-            ResetCutZonesFlags();
+            zoneEntered[i] = false;
         }
     }
+
+    // ==================================
+    // 2) ZONAS IZQUIERDA → cambian sprite
+    // ==================================
+    bool allLeft = true;
+    for (int i = 0; i < cutZonesIzq.Length; i++)
+    {
+        Vector2 zoneLocal;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            cutZonesIzq[i],
+            RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
+            null,
+            out zoneLocal
+        );
+
+        if (cutZonesIzq[i].rect.Contains(zoneLocal))
+            zoneEnteredIzq[i] = true;
+
+        if (!zoneEnteredIzq[i]) allLeft = false;
+    }
+    if (allLeft && cutZonesIzq.Length > 0)
+    {
+        NextFoodState();
+        ResetCutZonesFlags();
+    }
+
+    // ==================================
+    // 3) ZONAS DERECHA → cambian sprite
+    // ==================================
+    bool allRight = true;
+    for (int i = 0; i < cutZonesDch.Length; i++)
+    {
+        Vector2 zoneLocal;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            cutZonesDch[i],
+            RectTransformUtility.WorldToScreenPoint(null, drawRect.TransformPoint(localPoint)),
+            null,
+            out zoneLocal
+        );
+
+        if (cutZonesDch[i].rect.Contains(zoneLocal))
+            zoneEnteredDch[i] = true;
+
+        if (!zoneEnteredDch[i]) allRight = false;
+    }
+    if (allRight && cutZonesDch.Length > 0)
+    {
+        NextFoodState();
+        ResetCutZonesFlags();
+    }
+}
 
     void ResetCutZonesFlags()
     {
