@@ -3,23 +3,23 @@ using UnityEngine.UI; // Necesario para Toggle
 using TMPro; // Necesario para TextMeshProUGUI
 
 /// <summary>
-/// Controla la representación visual de UN solo item de la lista de misiones.
-/// Este script se coloca en el prefab del item de la misión.
+/// Controla la representaciï¿½n visual de UN solo item de la lista de misiones.
+/// Este script se coloca en el prefab del item de la misiï¿½n.
 /// </summary>
 public class QuestItemUI : MonoBehaviour
 {
     [Header("Referencias de UI")]
-    [Tooltip("El objeto de texto que mostrará la descripción de la misión.")]
+    [Tooltip("El objeto de texto que mostrarÃ¡ la descripciÃ³n de la misiÃ³n.")]
     public TextMeshProUGUI taskText;
 
-    [Tooltip("El componente Toggle que actúa como nuestro checkbox.")]
+    [Tooltip("El componente Toggle que actÃºa como nuestro checkbox.")]
     public Toggle taskToggle;
 
     [Header("Estilos Visuales")]
-    [Tooltip("Color del texto cuando la misión está PENDIENTE.")]
+    [Tooltip("Color del texto cuando la misiÃ³n estÃ¡ PENDIENTE.")]
     public Color pendingColor = Color.orange;
 
-    [Tooltip("Color del texto cuando la misión está COMPLETADA.")]
+    [Tooltip("Color del texto cuando la misiÃ³n estÃ¡ COMPLETADA.")]
     public Color completedColor = Color.green;
 
     // Almacena los datos de esta tarea
@@ -28,7 +28,7 @@ public class QuestItemUI : MonoBehaviour
     /// <summary>
     /// Configura este item visual con los datos de una QuestTask.
     /// </summary>
-    /// <param name="taskToSetup">Los datos de la misión a mostrar.</param>
+    /// <param name="taskToSetup">Los datos de la misiÃ³n a mostrar.</param>
     public void Setup(QuestTask taskToSetup)
     {
         currentTaskData = taskToSetup;
