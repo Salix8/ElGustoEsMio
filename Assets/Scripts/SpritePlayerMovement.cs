@@ -63,6 +63,9 @@ public class SpritePlayerMovement : MonoBehaviour
 
     void Update()
     {
+        if (TimeManager.Instance != null && TimeManager.Instance.IsPaused())
+            return; // No hacer scroll si el juego está pausado
+
         // DOWN: intentamos seleccionar
         if (Input.GetMouseButtonDown(0))
         {
@@ -188,6 +191,8 @@ public class SpritePlayerMovement : MonoBehaviour
     {
         ConfigurarSpriteSeleccionado(hit.transform, hit.point);
         Debug.Log($"Sprite seleccionado: {spriteSeleccionado.name} | offset {offset}");
+        if(PrefabManagerSingleton.Instance != null)
+            PrefabManagerSingleton.Instance.SetSeleccionado(spriteSeleccionado.gameObject);
     }
 
     private void ConfigurarSpriteSeleccionado(Transform sprite, Vector3 contacto)

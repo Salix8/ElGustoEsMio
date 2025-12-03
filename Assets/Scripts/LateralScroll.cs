@@ -6,18 +6,15 @@ public class LateralScroll : MonoBehaviour
     [Tooltip("Arrastra aqui el objeto (Panel, Imagen, etc.) que quieres desplazar. Debe tener un RectTransform.")]
     public RectTransform contentToScroll;
 
-    [Tooltip("La posicion X manima hasta la que se puede desplazar el contenido.")]
-    public float minXPosition;
-
-    [Tooltip("La posicion X maxima hasta la que se puede desplazar el contenido.")]
-    public float maxXPosition;
-
     [Tooltip("Ajusta la velocidad del desplazamiento. 1 es normal, >1 mas rapido, <1 mas lento.")]
-    public float scrollSensitivity = 1.0f;
+    public float scrollSensitivity = 0.01f;
 
     // Variables internas
-    private bool isDragging = false;
-    private Vector3 lastTouchPosition;
+    bool isDragging = false;
+    Vector3 lastTouchPosition;
+    
+    float minXPosition;
+    float maxXPosition;
 
     void Start()
     {
@@ -26,8 +23,10 @@ public class LateralScroll : MonoBehaviour
 
     void Update()
     {
-        // --- GESTION DE INPUT PARA MoVIL Y EDITOR ---
-        if (Input.GetMouseButtonDown(0)) // Si se pulsa la pantalla (o el boton izquierdo del raton)
+        if (TimeManager.Instance != null && TimeManager.Instance.IsPaused())
+            return; // No hacer scroll si el juego está pausado
+
+        if (Input.GetMouseButtonDown(0) && PrefabManagerSingleton.Instance != null && PrefabManagerSingleton.Instance.HayObjetoSeleccionado() == false) // Si se pulsa la pantalla (o el boton izquierdo del raton)
         {
             isDragging = true;
             lastTouchPosition = Input.mousePosition; // Guardamos la posicion inicial del toque
@@ -36,8 +35,6 @@ public class LateralScroll : MonoBehaviour
         {
             isDragging = false;
         }
-
-        // --- LaGICA DE DESPLAZAMIENTO ---
 
         if (isDragging)
         {
@@ -54,7 +51,7 @@ public class LateralScroll : MonoBehaviour
 
             // Posicion actual
             Vector2 newPosition = contentToScroll.anchoredPosition;
-            newPosition.x += differenceX;
+            newPosition.x -= differenceX;
 
             newPosition.x = Mathf.Clamp(newPosition.x, minXPosition, maxXPosition);
 
@@ -70,8 +67,6 @@ public class LateralScroll : MonoBehaviour
         if (contentToScroll == null)
         {
             Debug.LogWarning("CalculateBounds: contentToScroll no asignado.");
-            minXPosition = -500;
-            maxXPosition = 500;
             return;
         }
 
