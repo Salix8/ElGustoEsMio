@@ -32,14 +32,13 @@ public class PintarSobreCanvas : MonoBehaviour
     public RectTransform[] cutZones;
     public RectTransform[] cutZonesIzq;
     public RectTransform[] cutZonesDch;
-    bool[] zoneEntered;
-    bool[] zoneEnteredIzq;
-    bool[] zoneEnteredDch;
+    public bool[] zoneEntered;
+    public bool[] zoneEnteredIzq;
+    public bool[] zoneEnteredDch;
 
     [Header("Estados del alimento")]
     public List<Sprite> foodStates;  // Sprites del mismo alimento
     int currentStateIndex = 0;
-
     void Start()
     {
         if (drawRawImage == null || foodImage == null)
