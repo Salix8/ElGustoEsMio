@@ -82,6 +82,14 @@ public class MainMenuController : MonoBehaviour
 
     void SetupUserInterface()
     {
+        // 0. Crear EventSystem si no existe (CRÍTICO para que funcionen los botones)
+        if (GameObject.FindObjectOfType<UnityEngine.EventSystems.EventSystem>() == null)
+        {
+            GameObject eventSystemGO = new GameObject("EventSystem");
+            eventSystemGO.AddComponent<UnityEngine.EventSystems.EventSystem>();
+            eventSystemGO.AddComponent<UnityEngine.EventSystems.StandaloneInputModule>();
+        }
+
         // 1. Crear Canvas Principal
         GameObject canvasGO = new GameObject("MainMenuCanvas");
         Canvas canvas = canvasGO.AddComponent<Canvas>();
@@ -149,8 +157,10 @@ public class MainMenuController : MonoBehaviour
             
         btnImg.type = Image.Type.Sliced;
         btnImg.color = accentColor;
+        btnImg.raycastTarget = true; // Asegurar que recibe clics
         
         playButton = btnGO.AddComponent<Button>();
+        playButton.transition = Selectable.Transition.ColorTint;
         playButton.onClick.AddListener(OnPlayButtonClicked);
         
         RectTransform rtBtn = btnGO.GetComponent<RectTransform>();
@@ -162,11 +172,12 @@ public class MainMenuController : MonoBehaviour
         GameObject btnTxtGO = new GameObject("BtnText");
         btnTxtGO.transform.SetParent(btnGO.transform, false);
         Text btnTxt = btnTxtGO.AddComponent<Text>();
-        btnTxt.text = "JUGAR NIVEL";
+        btnTxt.text = "Jugar nivel";
         btnTxt.font = GetFont();
-        btnTxt.fontSize = 40;
+        btnTxt.fontSize = 60;
+        btnTxt.fontStyle = FontStyle.Bold;
         btnTxt.alignment = TextAnchor.MiddleCenter;
-        btnTxt.color = Color.white; // Texto del botón siempre blanco para contraste
+        btnTxt.color = Color.black; // Texto del botón siempre negro para contraste
         btnTxt.raycastTarget = false; // IMPORTANTE: No bloquear clics
 
         RectTransform rtBtnTxt = btnTxtGO.GetComponent<RectTransform>();
@@ -211,16 +222,22 @@ public class MainMenuController : MonoBehaviour
 
         // Color especial para "Próximamente"
         if (isComingSoon && icon == null) img.color = new Color(0.5f, 0.5f, 0.5f, 0.5f);
+        
+        img.raycastTarget = true; // Asegurar que recibe clics
 
         // 3. Botón invisible (para hacer clic en el plato directamente)
         Button btn = itemObj.AddComponent<Button>();
-        // CORRECCIÓN: Unity no tiene Selectable.Transition.Scale. Usamos None porque el script controla la escala.
-        btn.transition = Selectable.Transition.None; 
+        btn.transition = Selectable.Transition.ColorTint;
+        ColorBlock colors = btn.colors;
+        colors.highlightedColor = new Color(1.2f, 1.2f, 1.2f, 1f);
+        colors.pressedColor = new Color(0.8f, 0.8f, 0.8f, 1f);
+        btn.colors = colors;
         btn.onClick.AddListener(() => OnItemClicked(index, isComingSoon));
-
+/*
         // 4. Número del Nivel (Texto decorativo dentro del plato)
         if (!isComingSoon)
         {
+            
             GameObject numObj = new GameObject("LevelNumber");
             numObj.transform.SetParent(itemObj.transform, false);
             Text numTxt = numObj.AddComponent<Text>();
@@ -239,6 +256,7 @@ public class MainMenuController : MonoBehaviour
             RectTransform numRT = numObj.GetComponent<RectTransform>();
             numRT.anchorMin = Vector2.zero; numRT.anchorMax = Vector2.one;
             numRT.offsetMin = Vector2.zero; numRT.offsetMax = Vector2.zero;
+            
         }
         else
         {
@@ -257,7 +275,7 @@ public class MainMenuController : MonoBehaviour
             sRT.anchorMin = Vector2.zero; sRT.anchorMax = Vector2.one;
             sRT.offsetMin = Vector2.zero; sRT.offsetMax = Vector2.zero;
         }
-
+        */
         spawnedItems.Add(itemObj);
     }
 
@@ -441,30 +459,30 @@ public class MainMenuController : MonoBehaviour
         if (selectedIndex < levels.Count)
         {
             LevelData currentLevel = levels[selectedIndex];
-            levelTitleText.text = currentLevel.displayName.ToUpper();
+            levelTitleText.text = currentLevel.displayName;
 
             if (currentLevel.isLocked)
             {
                 // Mostramos estado bloqueado, pero dejamos interactable para dar feedback al click
                 playButton.interactable = true;
                 playButton.GetComponent<Image>().color = Color.gray;
-                playButton.GetComponentInChildren<Text>().text = "BLOQUEADO";
+                playButton.GetComponentInChildren<Text>().text = "Bloqueado";
             }
             else
             {
                 // Estado normal
                 playButton.interactable = true;
                 playButton.GetComponent<Image>().color = accentColor;
-                playButton.GetComponentInChildren<Text>().text = "JUGAR";
+                playButton.GetComponentInChildren<Text>().text = "Jugar";
             }
         }
         else
         {
             // Item "Próximamente"
-            levelTitleText.text = nextComingSoonText.ToUpper();
+            levelTitleText.text = nextComingSoonText;
             playButton.interactable = true; // Interactable para feedback
             playButton.GetComponent<Image>().color = Color.gray;
-            playButton.GetComponentInChildren<Text>().text = "BLOQUEADO";
+            playButton.GetComponentInChildren<Text>().text = "Bloqueado";
         }
     }
 
