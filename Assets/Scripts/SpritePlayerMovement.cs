@@ -66,8 +66,8 @@ public class SpritePlayerMovement : MonoBehaviour
         if (TimeManager.Instance != null && TimeManager.Instance.IsPaused())
             return; // No hacer scroll si el juego está pausado
 
-        // DOWN: intentamos seleccionar
-        if (Input.GetMouseButtonDown(0))
+        // DOWN: intentamos seleccionar (solo si no hay nada seleccionado ya)
+        if (Input.GetMouseButtonDown(0) && spriteSeleccionado == null)
         {
             if (camara == null) return;
 
@@ -87,7 +87,7 @@ public class SpritePlayerMovement : MonoBehaviour
                     {
                         Debug.Log($"Hit 3D (IgnoreTriggers): {h.transform.name}");
                         SeleccionarDesdeHit3D(h);
-                        break;
+                        return; // Salir inmediatamente después de seleccionar
                     }
                 }
             }
@@ -105,7 +105,7 @@ public class SpritePlayerMovement : MonoBehaviour
                         {
                             Debug.Log($"Hit 3D (IncludeTriggers): {h.transform.name} (trigger?)");
                             SeleccionarDesdeHit3D(h);
-                            break;
+                            return; // Salir inmediatamente después de seleccionar
                         }
                     }
                 }
@@ -124,6 +124,7 @@ public class SpritePlayerMovement : MonoBehaviour
                     Vector3 contacto = new Vector3(hit2d.point.x, transform.position.y, seleccionado.position.z);
                     ConfigurarSpriteSeleccionado(seleccionado, contacto);
                     Debug.Log($"Hit 2D: {seleccionado.name}");
+                    return; // Salir inmediatamente después de seleccionar
                 }
             }
 

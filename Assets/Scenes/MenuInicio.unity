@@ -150,7 +150,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::MainMenuController
   levels:
   - displayName: "Milhojas de verdura con secreto ib\xE9rico"
-    sceneName: OutdoorsScene
+    sceneName: Salix book
     plateImage: {fileID: -1994342334, guid: a6c48bb8eb3caed4d82856b299d43083, type: 3}
     isLocked: 0
   - displayName: Arroz con pollo al curri

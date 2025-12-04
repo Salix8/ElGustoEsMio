@@ -26,12 +26,22 @@ public class LateralScroll : MonoBehaviour
         if (TimeManager.Instance != null && TimeManager.Instance.IsPaused())
             return; // No hacer scroll si el juego está pausado
 
-        if (Input.GetMouseButtonDown(0) && PrefabManagerSingleton.Instance != null && PrefabManagerSingleton.Instance.HayObjetoSeleccionado() == false) // Si se pulsa la pantalla (o el boton izquierdo del raton)
+        // Verificar si hay un objeto seleccionado en PrefabManager
+        bool hayObjetoSeleccionado = PrefabManagerSingleton.Instance != null && 
+                                      PrefabManagerSingleton.Instance.HayObjetoSeleccionado();
+
+        if (Input.GetMouseButtonDown(0) && !hayObjetoSeleccionado) // Si se pulsa la pantalla y no hay objeto seleccionado
         {
             isDragging = true;
             lastTouchPosition = Input.mousePosition; // Guardamos la posicion inicial del toque
         }
         else if (Input.GetMouseButtonUp(0)) // Si se levanta el dedo de la pantalla
+        {
+            isDragging = false;
+        }
+
+        // IMPORTANTE: Detener el scroll si se selecciona un objeto mientras arrastramos
+        if (hayObjetoSeleccionado && isDragging)
         {
             isDragging = false;
         }
