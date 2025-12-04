@@ -27,7 +27,8 @@ public class PintarSobreCanvas : MonoBehaviour
 
     Vector2 lastLocalPos;
     bool drawing = false;
-
+    bool cortadoIzquierda = false;
+    bool cortadoDerecha = false;
     [Header("Zonas de corte")]
     public RectTransform[] cutZones;
     public RectTransform[] cutZonesIzq;
@@ -191,8 +192,9 @@ void CheckCutZones(Vector2 localPoint)
 
         if (!zoneEnteredIzq[i]) allLeft = false;
     }
-    if (allLeft && cutZonesIzq.Length > 0)
+    if (allLeft && cutZonesIzq.Length > 0 && !cortadoIzquierda)
     {
+        cortadoIzquierda = true;
         NextFoodState();
         ResetCutZonesFlags();
     }
@@ -216,8 +218,9 @@ void CheckCutZones(Vector2 localPoint)
 
         if (!zoneEnteredDch[i]) allRight = false;
     }
-    if (allRight && cutZonesDch.Length > 0)
+    if (allRight && cutZonesDch.Length > 0 && !cortadoDerecha)
     {
+        cortadoDerecha = true;
         NextFoodState();
         ResetCutZonesFlags();
     }
