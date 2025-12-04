@@ -4,14 +4,14 @@ using UnityEngine;
 [System.Serializable]
 public class QuestTask
 {
-    [Tooltip("El texto de la misión (ej: 'Recoge 5 manzanas')")]
+    [Tooltip("El texto de la misiÃ³n (ej: 'Recoge 5 manzanas')")]
     public string taskDescription;
 
-    [Tooltip("Estado actual de la misión (completada o no)")]
+    [Tooltip("Estado actual de la misiÃ³n (completada o no)")]
     public bool isCompleted;
 
     /// <summary>
-    /// Constructor para crear una nueva tarea fácilmente desde código.
+    /// Constructor para crear una nueva tarea fÃ¡cilmente desde cÃ³digo.
     /// Las tareas siempre empiezan como 'no completadas'.
     /// </summary>
     /// <param name="description">El texto de la tarea.</param>

@@ -257,7 +257,8 @@ public class SpritePlayerMovement : MonoBehaviour
 
         if (dropParticlesPrefab != null)
         {
-            ParticleSystem ps = Instantiate(dropParticlesPrefab, destino, Quaternion.identity);
+            Vector3 spawnPoint = ObtenerPuntoInferior(sprite);
+            ParticleSystem ps = Instantiate(dropParticlesPrefab, spawnPoint, Quaternion.identity);
             ps.Play();
             var main = ps.main;
             float lifetime = main.duration + main.startLifetime.constantMax;
@@ -266,6 +267,34 @@ public class SpritePlayerMovement : MonoBehaviour
 
         dropCoroutine = null;
     }
+
+    private Vector3 ObtenerPuntoInferior(Transform sprite)
+    {
+        Collider col = sprite.GetComponent<Collider>();
+        if (col != null)
+        {
+            Bounds b = col.bounds;
+            return new Vector3(b.center.x, b.min.y, b.center.z);
+        }
+
+        Collider2D col2 = sprite.GetComponent<Collider2D>();
+        if (col2 != null)
+        {
+            Bounds b = col2.bounds;
+            return new Vector3(b.center.x, b.min.y, sprite.position.z);
+        }
+
+        Renderer rend = sprite.GetComponent<Renderer>();
+        if (rend != null)
+        {
+            Bounds b = rend.bounds;
+            return new Vector3(b.center.x, b.min.y, b.center.z);
+        }
+
+        return new Vector3(sprite.position.x, destinoGroundY, sprite.position.z);
+    }
+
+    private float destinoGroundY => transform.position.y;
 
     void OnDrawGizmosSelected()
     {

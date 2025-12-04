@@ -4,23 +4,23 @@ using UnityEngine;
 /// <summary>
 /// El "cerebro" que gestiona todo el libro de misiones.
 /// Mantiene la lista de misiones, las "dibuja" en la UI
-/// y le dice al BookAnimator cu·ndo debe abrirse o cerrarse.
+/// y le dice al BookAnimator cuÔøΩndo debe abrirse o cerrarse.
 /// </summary>
 public class QuestBookManager : MonoBehaviour
 {
     [Header("Componentes Principales")]
-    [Tooltip("Arrastra aquÌ el objeto que tiene el script BookAnimator.")]
+    [Tooltip("Arrastra aqu√≠ el objeto que tiene el script BookAnimator.")]
     public BookAnimator bookAnimator;
 
     [Header("Datos de Misiones")]
-    [Tooltip("La lista de todas las misiones del jugador. RellÈnala desde el inspector para probar.")]
+    [Tooltip("La lista de todas las misiones del jugador. Rell√©nala desde el inspector para probar.")]
     public List<QuestTask> allQuests;
 
     [Header("Prefab y Contenedor de UI")]
-    [Tooltip("Arrastra aquÌ el *Prefab* de 'QuestItem_Template' desde tu ventana de Project.")]
+    [Tooltip("Arrastra aqu√≠ el *Prefab* de 'QuestItem_Template' desde tu ventana de Project.")]
     public GameObject questItemPrefab;
 
-    [Tooltip("Arrastra aquÌ el panel (con Vertical Layout Group) donde se crear·n los items de la lista.")]
+    [Tooltip("Arrastra aqu√≠ el panel (con Vertical Layout Group) donde se crear√°n los items de la lista.")]
     public Transform taskListContainer;
 
     private bool isBookOpen = false;
@@ -28,7 +28,7 @@ public class QuestBookManager : MonoBehaviour
     // --- (TEST) ---
     void Start()
     {
-        // Si la lista est· vacÌa, aÒadimos datos de prueba
+        // Si la lista est√° vac√≠a, a√±adimos datos de prueba
         if (allQuests == null || allQuests.Count == 0)
         {
             Debug.Log("No hay misiones. Creando misiones de prueba.");
@@ -42,9 +42,19 @@ public class QuestBookManager : MonoBehaviour
     }
     // --- (TEST) ---
 
+    void Update()
+    {
+        // Para pruebas r√°pidas: abrir/cerrar el libro con la tecla B
+        if (Input.GetKeyDown(KeyCode.B))
+        {
+            RefreshBookUI();
+            ToggleBook();
+        }
+    }
+
 
     /// <summary>
-    /// Esta es la funciÛn p˙blica que debe llamar tu botÛn del HUD.
+    /// Esta es la funci√≥n p√∫blica que debe llamar tu bot√≥n del HUD.
     /// </summary>
     public void ToggleBook()
     {
@@ -61,7 +71,7 @@ public class QuestBookManager : MonoBehaviour
 
     /// <summary>
     /// Borra la lista visual actual y la vuelve a crear desde cero
-    /// bas·ndose en la lista de datos 'allQuests'.
+    /// bas√°ndose en la lista de datos 'allQuests'.
     /// </summary>
     private void RefreshBookUI()
     {
@@ -79,7 +89,7 @@ public class QuestBookManager : MonoBehaviour
         // Reset
         foreach (Transform child in taskListContainer)
             Destroy(child.gameObject);
-        
+
 
         foreach (QuestTask taskData in allQuests)
         {
