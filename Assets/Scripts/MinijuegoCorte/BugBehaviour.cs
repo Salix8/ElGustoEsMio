@@ -10,7 +10,7 @@ public class BugBehaviour : MonoBehaviour
     public Animator animator;
     public SpriteRenderer spriteRenderer;
 
-    Color originalColor;
+    Material mat;
     Vector3 startPos;
 
     PintarSobreCanvas activeCanvas;
@@ -20,7 +20,7 @@ public class BugBehaviour : MonoBehaviour
         if (animator == null) animator = GetComponent<Animator>();
         if (spriteRenderer == null) spriteRenderer = GetComponent<SpriteRenderer>();
 
-        originalColor = spriteRenderer.color;
+        mat = spriteRenderer.material;
         startPos = transform.localPosition;
 
         FindActiveFoodCanvas();
@@ -30,18 +30,33 @@ public class BugBehaviour : MonoBehaviour
     {
         MoveSideToSide();
         CheckCutZoneStatus();
+        UpdateAnimator();
+        //Debug.Log("Anim params: Enfadado=" + animator.GetBool("Enfadado") + " velocidad=" + animator.GetFloat("velocidad"));
+
     }
 
+    // ---------------------------------------------------------
+    // Movimiento lateral (idle si moveAmount = 0)
+    // ---------------------------------------------------------
     void MoveSideToSide()
     {
+        if (moveAmount == 0)
+        {
+            // No moverse
+            animator.SetFloat("Velocidad", 0f);
+            transform.localPosition = startPos;
+            return;
+        }
+
         float offset = Mathf.Sin(Time.time * moveSpeed) * moveAmount;
         Vector3 pos = startPos;
         pos.x += offset;
         transform.localPosition = pos;
 
-        animator.SetBool("Walking", true);
+        animator.SetFloat("Velocidad", moveAmount);
     }
 
+    // ---------------------------------------------------------
     void FindActiveFoodCanvas()
     {
         PintarSobreCanvas[] all = FindObjectsOfType<PintarSobreCanvas>();
@@ -55,29 +70,54 @@ public class BugBehaviour : MonoBehaviour
         }
     }
 
+    // ---------------------------------------------------------
     void CheckCutZoneStatus()
     {
         if (activeCanvas == null)
             FindActiveFoodCanvas();
         if (activeCanvas == null) return;
 
-        // 🔴 ROJO si toca zonas malas
+        // Si toca zona mala → enfadado
         foreach (bool z in activeCanvas.zoneEntered)
         {
             if (z)
             {
-                SetColor(Color.red);
+                SetEnfadado(true);
                 return;
             }
         }
 
-        // Si no hay zonas malas, volver a color original
-        SetColor(originalColor);
+        // Si no toca zona mala → no enfadado
+        SetEnfadado(false);
     }
 
-    void SetColor(Color c)
+    // ---------------------------------------------------------
+    void SetEnfadado(bool isAngry)
     {
-        if (spriteRenderer.color != c)
-            spriteRenderer.color = c;
+        animator.SetBool("Enfadado", isAngry);
+
+        if (isAngry)
+        {
+            mat.SetFloat("_Hue_Shift", 300f);
+            mat.SetFloat("_Saturation", 1f);
+            mat.SetFloat("_Contrast", 1f);
+        }
+        else
+        {
+            mat.SetFloat("_Hue_Shift", 0f);
+            mat.SetFloat("_Saturation", 1f);
+            mat.SetFloat("_Contrast", 1f);
+        }
+    }
+
+    // ---------------------------------------------------------
+    void UpdateAnimator()
+    {
+        // Aquí NO tocamos Enfadado porque ya lo maneja CutZoneStatus
+
+        if (moveAmount == 0)
+            animator.SetFloat("Velocidad", 0f);
+        else
+            animator.SetFloat("Velocidad", moveAmount);
     }
 }

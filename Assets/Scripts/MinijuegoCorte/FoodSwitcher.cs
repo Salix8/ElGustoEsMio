@@ -7,16 +7,19 @@ public class FoodSwitcher : MonoBehaviour
     [Header("Referencias")]
     public GameObject[] foodImages;   // Contiene Image + PintarSobreCanvas
     public GameObject[] drawCanvases; // Los RawImage asociados
-
+    private QuestBookManager questBookManager;
     [Header("Animación")]
     public float slideDuration = 0.35f;   // Velocidad del deslizamiento
     public float canvasWidth = 2000f;     // Ancho aproximado del canvas (ajústalo)
-
+    private int averageScore = 0;
     private int currentIndex = 0;
     private bool isAnimating = false;
 
+    public int vecesZonasTocadas = 0;
+
     void Start()
     {
+        questBookManager = FindObjectOfType<QuestBookManager>();
         for (int i = 0; i < foodImages.Length; i++)
         {
             bool active = i == 0;
@@ -32,6 +35,40 @@ public class FoodSwitcher : MonoBehaviour
         }
     }
 
+    public void AddZonaCount()
+    {
+        vecesZonasTocadas++;
+        Debug.Log("Zonas tocadas: " + vecesZonasTocadas);
+    }
+
+    public void GetScore()
+    {
+        if (vecesZonasTocadas >= 15)
+        {
+            averageScore = 0;
+        }
+        else if (vecesZonasTocadas >= 10)
+        {
+            averageScore = 2;
+        }
+        else if (vecesZonasTocadas >= 7)
+        {
+            averageScore = 5;
+        }
+        else if (vecesZonasTocadas >= 4)
+        {
+            averageScore = 7;
+        }
+        else if (vecesZonasTocadas >= 1)
+        {
+            averageScore = 9;
+        }
+        else
+        {
+            averageScore = 10;
+        }
+    }
+
     public void NextFood()
     {
         if (isAnimating) return;
@@ -39,7 +76,10 @@ public class FoodSwitcher : MonoBehaviour
 
         int nextIndex = currentIndex + 1;
         if (nextIndex >= foodImages.Length)
-            nextIndex = 0;
+        {
+            GetScore();
+            //questBookManager.ShowMinigameResult("Objetivo: Cortar verduras Puntuación:", averageScore);
+        }
 
         StartCoroutine(SwitchFoodAnimated(currentIndex, nextIndex));
 

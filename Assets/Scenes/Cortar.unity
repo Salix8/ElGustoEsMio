@@ -319,6 +319,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18df3390e9a0bde48a77f4e8f0f6f0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PintarSobreCanvas
+  switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 1107835905}
   foodImage: {fileID: 32081786}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
@@ -797,7 +798,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55dc2f5a7d7c6b54ea70051d1c053b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BugBehaviour
-  moveAmount: 0.2
+  moveAmount: 0
   moveSpeed: 0.1
   animator: {fileID: 328119932}
   spriteRenderer: {fileID: 328119933}
@@ -1821,6 +1822,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4970986492167064068, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2db4687ba208e5b49847e4032eb5ac1f, type: 2}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.17
@@ -1843,7 +1848,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 3.104
+      value: 2.889
       objectReference: {fileID: 0}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -2084,7 +2089,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55dc2f5a7d7c6b54ea70051d1c053b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BugBehaviour
-  moveAmount: 0.2
+  moveAmount: 0
   moveSpeed: 0.4
   animator: {fileID: 683225078}
   spriteRenderer: {fileID: 683225079}
@@ -2398,7 +2403,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 55dc2f5a7d7c6b54ea70051d1c053b42, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::BugBehaviour
-  moveAmount: 0.3
+  moveAmount: 0
   moveSpeed: 0.5
   animator: {fileID: 741732171}
   spriteRenderer: {fileID: 741732172}
@@ -2909,6 +2914,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4970986492167064068, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2db4687ba208e5b49847e4032eb5ac1f, type: 2}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.17
@@ -2923,7 +2932,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -5.523
+      value: -6.081
       objectReference: {fileID: 0}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalPosition.y
@@ -2931,7 +2940,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 2.92
+      value: 2.883
       objectReference: {fileID: 0}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalRotation.w
@@ -3143,6 +3152,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18df3390e9a0bde48a77f4e8f0f6f0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PintarSobreCanvas
+  switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 512394452}
   foodImage: {fileID: 937310207}
   drawColor: {r: 0.5471698, g: 0, b: 0, a: 1}
@@ -3468,6 +3478,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18df3390e9a0bde48a77f4e8f0f6f0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PintarSobreCanvas
+  switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 1381685}
   foodImage: {fileID: 1032498894}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
@@ -4038,6 +4049,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18df3390e9a0bde48a77f4e8f0f6f0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PintarSobreCanvas
+  switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 598559133}
   foodImage: {fileID: 1133311942}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
@@ -4569,6 +4581,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 18df3390e9a0bde48a77f4e8f0f6f0e4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PintarSobreCanvas
+  switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 791264970}
   foodImage: {fileID: 1299787747}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
@@ -4600,6 +4613,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4970986492167064068, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2db4687ba208e5b49847e4032eb5ac1f, type: 2}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.17
@@ -5520,6 +5537,7 @@ MonoBehaviour:
   - {fileID: 1107835903}
   slideDuration: 0.35
   canvasWidth: 2000
+  vecesZonasTocadas: 0
 --- !u!4 &1753416962
 Transform:
   m_ObjectHideFlags: 0
@@ -5634,6 +5652,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4970986492167064068, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2db4687ba208e5b49847e4032eb5ac1f, type: 2}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.17
@@ -5710,6 +5732,10 @@ PrefabInstance:
     serializedVersion: 3
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 4970986492167064068, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
+      propertyPath: 'm_Materials.Array.data[0]'
+      value: 
+      objectReference: {fileID: 2100000, guid: 2db4687ba208e5b49847e4032eb5ac1f, type: 2}
     - target: {fileID: 5948287249018845264, guid: 7a05624aa57808946824d9f59cf9a39c, type: 3}
       propertyPath: m_LocalScale.x
       value: 0.17
