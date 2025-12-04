@@ -32,9 +32,6 @@ public class BookAnimator : MonoBehaviour
     [Tooltip("Tiempo en segundos entre cada frame de la animación de página.")]
     public float pageTurnSpeed = 0.1f;
     
-    [Tooltip("Contenedor de las misiones para poder activarlo y desactivarlo.")]
-    public GameObject taskListContainer;
-
     // --- Variables privadas ---
     private bool isAnimating = false; // Para controlar la corutina activa
     private bool isBookShown = false; // Estado lógico del libro (abierto/cerrado)
@@ -49,10 +46,6 @@ public class BookAnimator : MonoBehaviour
         if (animatedPageImage != null)
         {
             animatedPageImage.gameObject.SetActive(false); // La página animada empieza oculta
-        }
-        if (taskListContainer != null)
-        {
-            taskListContainer.SetActive(false); // El contenido empieza oculto
         }
     }
 
@@ -69,6 +62,10 @@ public class BookAnimator : MonoBehaviour
         bookPanel.anchoredPosition = Vector2.Lerp(bookPanel.anchoredPosition, targetPosition, animationSpeed * Time.unscaledDeltaTime);
     }
 
+    /// <summary>
+    /// Inicia la animación para abrir o cerrar el libro.
+    /// No controla el contenido, solo la animación.
+    /// </summary>
     public void ToggleBook()
     {
         // Si ya hay una animación en curso, no hacer nada para evitar solapamientos.
@@ -89,6 +86,11 @@ public class BookAnimator : MonoBehaviour
         }
     }
 
+    public bool IsBookOpen()
+    {
+        return isBookShown;
+    }
+
     private IEnumerator OpenBookSequence()
     {
         isAnimating = true;
@@ -105,7 +107,6 @@ public class BookAnimator : MonoBehaviour
         // 3. Animar las páginas pasando hacia adelante
         if (animatedPageImage != null && pageTurnSprites != null && pageTurnSprites.Length > 0)
         {
-            if(taskListContainer != null) taskListContainer.SetActive(false);
             animatedPageImage.gameObject.SetActive(true);
 
             foreach (var pageSprite in pageTurnSprites)
@@ -118,7 +119,6 @@ public class BookAnimator : MonoBehaviour
             if (bookBaseSprite != null)
             {
                 animatedPageImage.sprite = bookBaseSprite;
-                // Dejamos la imagen activa con el libro base
             }
             else
             {
@@ -126,10 +126,7 @@ public class BookAnimator : MonoBehaviour
             }
         }
         
-        Debug.Log("Animación de páginas finalizada. Mostrando contenido.");
-        // 4. Mostrar el contenido final del libro
-        if(taskListContainer != null) taskListContainer.SetActive(true);
-
+        Debug.Log("Animación de páginas finalizada.");
         isAnimating = false; // Liberar el bloqueo
     }
 
@@ -137,9 +134,6 @@ public class BookAnimator : MonoBehaviour
     {
         isAnimating = true;
         Debug.Log("Iniciando secuencia de cierre de libro...");
-        
-        // 1. Ocultar el contenido y animar las páginas pasando hacia atrás
-        if(taskListContainer != null) taskListContainer.SetActive(false);
         
         if (animatedPageImage != null && pageTurnSprites != null && pageTurnSprites.Length > 0)
         {
@@ -159,17 +153,17 @@ public class BookAnimator : MonoBehaviour
         
         Debug.Log("Animación de páginas invertida finalizada. Ocultando libro.");
         
-        // 2. Ocultar la imagen de animación y reanudar el juego
+        // Ocultar la imagen de animación y reanudar el juego
         if (animatedPageImage != null)
         {
             animatedPageImage.gameObject.SetActive(false);
         }
         TimeManager.Instance.ResumeGame();
 
-        // 3. Indicar que el libro debe ocultarse para que Update empiece a moverlo
+        // Indicar que el libro debe ocultarse para que Update empiece a moverlo
         isBookShown = false;
         
-        // 4. Esperar un poco a que el libro se vaya para liberar el bloqueo
+        // Esperar un poco a que el libro se vaya para liberar el bloqueo
         yield return new WaitForSecondsRealtime(1.0f); // Darle tiempo a que se vaya de la pantalla
         isAnimating = false; // Liberar el bloqueo
     }
