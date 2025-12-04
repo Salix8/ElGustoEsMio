@@ -23,6 +23,8 @@ public class QuestBookManager : MonoBehaviour
     [Tooltip("Arrastra aquí el panel (con Vertical Layout Group) donde se crearán los items de la lista.")]
     public Transform taskListContainer;
 
+    public MinigameProgressManager minigameProgressManager;
+
     private bool isBookOpen = false;
 
     // --- (TEST) ---
@@ -33,11 +35,27 @@ public class QuestBookManager : MonoBehaviour
         {
             Debug.Log("No hay misiones. Creando misiones de prueba.");
             allQuests = new List<QuestTask>();
-            allQuests.Add(new QuestTask("Encuentra la llave dorada"));
-            allQuests.Add(new QuestTask("Encuentra la puerta que hay cerca del monte del destino, donde frodo perdio la capa de los elfos"));
-            allQuests.Add(new QuestTask("Derrota Sauron"));
-
-            allQuests[1].isCompleted = true;
+            allQuests.Add(new QuestTask("Coloca las verduras en la tabla de cortar"));
+            allQuests.Add(new QuestTask("Cocina la verdura cortada en el horno"));
+            allQuests.Add(new QuestTask("Cocina el secreto en la plancha"));
+            allQuests.Add(new QuestTask("Emplata el milhojas de  verduras"));
+        }
+        if (minigameProgressManager == null)
+        {
+            minigameProgressManager = FindObjectOfType<MinigameProgressManager>();
+        }
+        if (minigameProgressManager != null)
+        {
+            for (int i = 0; i < minigameProgressManager.nombresMinijuegos.Count; i++)
+            {
+                if (minigameProgressManager.EstadoMinijuego(minigameProgressManager.nombresMinijuegos[i]) == MinigameProgressManager.MinijuegoEstado.Completado)
+                {
+                    Debug.Log($"Minijuego '{minigameProgressManager.nombresMinijuegos[i]}' completado. Marcando misión como completada.");
+                    // Marcar la misión correspondiente como completada
+                    quest.isCompleted = true;
+                      
+                }
+            }
         }
     }
     // --- (TEST) ---
