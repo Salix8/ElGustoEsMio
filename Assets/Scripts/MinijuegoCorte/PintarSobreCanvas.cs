@@ -9,7 +9,7 @@ public class PintarSobreCanvas : MonoBehaviour
     public FoodSwitcher switcher;
     public RawImage drawRawImage;    // RawImage donde pintamos
     public Image foodImage;          // Image del alimento (sprite)
-
+    public BookAnimator bookAnimator;
     [Header("Ajustes")]
     public Color drawColor = Color.red;
     [Tooltip("Resolución del canvas de dibujo (cuadrado). Más alto = más detalle pero más memoria")]
@@ -75,6 +75,8 @@ public class PintarSobreCanvas : MonoBehaviour
 
     void Update()
     {
+        if(bookAnimator.getIsBookShown() == true) return;
+
         HandleInput();
 
         frameCounter++;
