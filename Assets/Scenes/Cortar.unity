@@ -322,7 +322,7 @@ MonoBehaviour:
   switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 1107835905}
   foodImage: {fileID: 32081786}
-  bookAnimator: {fileID: 0}
+  bookAnimator: {fileID: 852123572}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
   textureResolution: 1024
   brushSize: 12
@@ -2759,6 +2759,17 @@ CanvasRenderer:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 803164782}
   m_CullTransparentMesh: 1
+--- !u!114 &852123572 stripped
+MonoBehaviour:
+  m_CorrespondingSourceObject: {fileID: 8508947103931764603, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+  m_PrefabInstance: {fileID: 1061338383}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 507a0787f0a013046b89c672b2d00ada, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BookAnimator
 --- !u!1 &894810700
 GameObject:
   m_ObjectHideFlags: 0
@@ -3087,7 +3098,7 @@ MonoBehaviour:
   switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 512394452}
   foodImage: {fileID: 937310207}
-  bookAnimator: {fileID: 0}
+  bookAnimator: {fileID: 852123572}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
   textureResolution: 1024
   brushSize: 12
@@ -3414,7 +3425,7 @@ MonoBehaviour:
   switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 1381685}
   foodImage: {fileID: 1032498894}
-  bookAnimator: {fileID: 0}
+  bookAnimator: {fileID: 852123572}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
   textureResolution: 1024
   brushSize: 12
@@ -4247,7 +4258,7 @@ MonoBehaviour:
   switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 598559133}
   foodImage: {fileID: 1133311942}
-  bookAnimator: {fileID: 0}
+  bookAnimator: {fileID: 852123572}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
   textureResolution: 1024
   brushSize: 12
@@ -4780,7 +4791,7 @@ MonoBehaviour:
   switcher: {fileID: 1753416961}
   drawRawImage: {fileID: 791264970}
   foodImage: {fileID: 1299787747}
-  bookAnimator: {fileID: 0}
+  bookAnimator: {fileID: 852123572}
   drawColor: {r: 1, g: 0, b: 0, a: 1}
   textureResolution: 1024
   brushSize: 12
