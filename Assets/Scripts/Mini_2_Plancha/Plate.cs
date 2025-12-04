@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
-using System.Linq; // Necesario para usar .Average() en la lista
+using System.Linq;
+using System.Collections; // Necesario para Corutinas
 
 /// <summary>
 /// Este script va en el Plato. Actúa como un trigger para
@@ -14,6 +15,7 @@ public class Plate : MonoBehaviour
     [Tooltip("Arrastra aquí el objeto de la escena que contiene el script MeatSpawner.")]
     public MeatSpawner meatSpawner;
 
+    private QuestBookManager questBookManager;
     private int expectedMeats;
     private List<float> collectedScores = new List<float>();
     private List<Meat> collectedMeatObjects = new List<Meat>();
@@ -22,6 +24,12 @@ public class Plate : MonoBehaviour
 
     void Start()
     {
+        questBookManager = FindObjectOfType<QuestBookManager>();
+        if (questBookManager == null)
+        {
+            Debug.LogError("¡Error en Plate.cs! No se encontró un 'QuestBookManager' en la escena.", this);
+        }
+
         // Asigna dinámicamente el número de carnes esperadas.
         if (meatSpawner != null)
         {
@@ -56,14 +64,14 @@ public class Plate : MonoBehaviour
         collectedMeatObjects.Add(meat);
 
         Debug.Log($"¡Carne entregada! Puntuación individual: {meatScore.ToString("F1")}. Trozos en el plato: {collectedScores.Count}/{expectedMeats}");
-        
+
         if (collectedScores.Count >= expectedMeats)
         {
-            CalculateAverageScore();
+            StartCoroutine(CalculateAndShowScore());
         }
     }
 
-    private void CalculateAverageScore()
+    private IEnumerator CalculateAndShowScore()
     {
         if (collectedScores.Count == 0)
         {
@@ -73,9 +81,19 @@ public class Plate : MonoBehaviour
         {
             averageScore = collectedScores.Average();
         }
-        
+
         isFinalScoreCalculated = true;
         Debug.Log($"¡Puntuación final del plato completada! Puntuación media: {averageScore.ToString("F1")} / 10.0");
+
+        // Esperar un poco antes de mostrar el libro
+        yield return new WaitForSeconds(0.5f);
+
+        // Llamar al libro para que muestre el resultado
+        if (questBookManager != null)
+        {
+            // Convertimos el score a un entero para mostrarlo, pero puedes cambiarlo si lo necesitas.
+            questBookManager.ShowMinigameResult("Objetivo: sofreír", (int)averageScore, "Has completado el minijuego de sofreír.");
+        }
     }
 
     public float GetScore()
@@ -91,4 +109,3 @@ public class Plate : MonoBehaviour
         }
     }
 }
-

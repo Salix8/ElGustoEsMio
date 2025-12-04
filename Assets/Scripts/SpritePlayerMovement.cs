@@ -183,6 +183,10 @@ public class SpritePlayerMovement : MonoBehaviour
             destino.y = transform.position.y;
             Quaternion rotDestino = rotationAntesDeArrastrar;
 
+            // Limpiar selección del PrefabManager
+            if(PrefabManagerSingleton.Instance != null)
+                PrefabManagerSingleton.Instance.SetSeleccionado(null);
+
             spriteSeleccionado = null;
             dropCoroutine = StartCoroutine(DropAndImpact(soltado, destino, rotDestino));
         }
@@ -198,6 +202,12 @@ public class SpritePlayerMovement : MonoBehaviour
 
     private void ConfigurarSpriteSeleccionado(Transform sprite, Vector3 contacto)
     {
+        // Si ya hay un sprite seleccionado, ignorar
+        if (spriteSeleccionado != null)
+        {
+            return;
+        }
+
         if (dropCoroutine != null)
         {
             StopCoroutine(dropCoroutine);
