@@ -54,11 +54,20 @@ public class UtensilioMinijuego : MonoBehaviour
 
     void Start()
     {
-        // Obtener renderer para feedback visual
+        // Obtener renderer para feedback visual (buscar en el objeto o en sus hijos)
         rendererUtensilio = GetComponent<Renderer>();
+        if (rendererUtensilio == null)
+        {
+            rendererUtensilio = GetComponentInChildren<Renderer>();
+        }
+        
         if (rendererUtensilio != null)
         {
             colorOriginal = rendererUtensilio.material.color;
+        }
+        else
+        {
+            Debug.LogWarning($"No se encontró Renderer en '{gameObject.name}' ni en sus hijos. El feedback visual no funcionará.");
         }
 
         posicionOriginal = transform.position;
@@ -90,12 +99,24 @@ public class UtensilioMinijuego : MonoBehaviour
                 // IMPORTANTE: Evitar que el utensilio se detecte a sí mismo
                 if (objetoSeleccionado == gameObject || objetoSeleccionado.transform.IsChildOf(transform))
                 {
+                    if (objetoSobreUtensilio)
+                    {
+                        objetoSobreUtensilio = false;
+                        RestaurarColor();
+                        objetoActual = null;
+                    }
                     return;
                 }
 
                 // Verificar que el objeto tenga el tag correcto (si no se ignora el tag)
                 if (!ignorarTag && !objetoSeleccionado.CompareTag(tagIngrediente))
                 {
+                    if (objetoSobreUtensilio)
+                    {
+                        objetoSobreUtensilio = false;
+                        RestaurarColor();
+                        objetoActual = null;
+                    }
                     return;
                 }
 
@@ -105,7 +126,8 @@ public class UtensilioMinijuego : MonoBehaviour
                 // Si está dentro del radio de detección
                 if (distancia <= radioDeteccion)
                 {
-                    if (!objetoSobreUtensilio)
+                    // Actualizar feedback siempre que esté dentro del radio
+                    if (!objetoSobreUtensilio || objetoActual != objetoSeleccionado)
                     {
                         objetoSobreUtensilio = true;
                         objetoActual = objetoSeleccionado;
@@ -131,10 +153,22 @@ public class UtensilioMinijuego : MonoBehaviour
                     objetoSobreUtensilio = false;
                     objetoActual = null;
                 }
-                else
+                else if (objetoSobreUtensilio)
                 {
+                    objetoSobreUtensilio = false;
                     RestaurarColor();
+                    objetoActual = null;
                 }
+            }
+        }
+        else
+        {
+            // Si no hay PrefabManagerSingleton, limpiar estado
+            if (objetoSobreUtensilio)
+            {
+                objetoSobreUtensilio = false;
+                RestaurarColor();
+                objetoActual = null;
             }
         }
     }
@@ -146,14 +180,19 @@ public class UtensilioMinijuego : MonoBehaviour
         // Verificar si el ingrediente es correcto
         bool esCorrecto = EsIngredienteCorrecto(ingrediente.name);
 
-        // Cambiar color según sea correcto o no
+        // Cambiar color según sea correcto o no, con mayor contraste
         Color colorFeedback = esCorrecto ? colorCorrecto : colorIncorrecto;
-        rendererUtensilio.material.color = Color.Lerp(colorOriginal, colorFeedback, 0.7f);
+        
+        // Asegurar que el material se actualiza inmediatamente
+        if (rendererUtensilio.material != null)
+        {
+            rendererUtensilio.material.color = Color.Lerp(colorOriginal, colorFeedback, 0.7f);
+        }
     }
 
     void RestaurarColor()
     {
-        if (rendererUtensilio != null)
+        if (rendererUtensilio != null && rendererUtensilio.material != null)
         {
             rendererUtensilio.material.color = colorOriginal;
         }
@@ -343,6 +382,13 @@ public class UtensilioMinijuego : MonoBehaviour
     {
         // Pequeño delay para que el jugador vea el último ingrediente desaparecer
         yield return new WaitForSeconds(delay);
+        
+        // Registrar inicio del minijuego en el sistema de progreso
+        if (MinigameProgressManager.Instance != null)
+        {
+            MinigameProgressManager.Instance.IniciarMinijuego(escenaMinijuego);
+        }
+        
         SceneManager.LoadScene(escenaMinijuego);
     }
 

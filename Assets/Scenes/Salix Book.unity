@@ -261,7 +261,7 @@ Transform:
   m_GameObject: {fileID: 84638708}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 1.06, z: 0}
+  m_LocalPosition: {x: -6.52, y: 1.06, z: 8.18}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -543,6 +543,96 @@ MonoBehaviour:
   rotationLerpSpeed: 5
   maxYawOffset: 12
   noiseSpeed: 0.8
+--- !u!1 &180413799
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 180413800}
+  - component: {fileID: 180413801}
+  m_Layer: 0
+  m_Name: Plato
+  m_TagString: Ingrediente
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &180413800
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180413799}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.4905935, y: -0, z: -0, w: 0.8713886}
+  m_LocalPosition: {x: -6.8900013, y: 0.37, z: 0.51}
+  m_LocalScale: {x: 0.64, y: 0.64, z: 0.64}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 1106758162}
+  m_LocalEulerAnglesHint: {x: 58.759, y: 0, z: 0}
+--- !u!212 &180413801
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 180413799}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -845254382, guid: be32bb767844f0040b4c2c5af674361f, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &194175483
 GameObject:
   m_ObjectHideFlags: 0
@@ -553,6 +643,7 @@ GameObject:
   m_Component:
   - component: {fileID: 194175484}
   - component: {fileID: 194175485}
+  - component: {fileID: 194175486}
   m_Layer: 0
   m_Name: Secreto_SinCocinar
   m_TagString: Ingrediente
@@ -597,6 +688,209 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 6.7, y: 3.23, z: 0.2}
   m_Center: {x: 0, y: -0.01, z: 0}
+--- !u!114 &194175486
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 194175483}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c1cb13cf2431f4abb007abe0e99707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IngredienteCondicional
+  minijuegoRequerido: Plancha
+  mostrarAntesDeCompletar: 1
+  mostrarDespuesDeCompletar: 0
+  ingredientes:
+  - {fileID: 194175483}
+  minijuegosDisponibles: 'Minijuegos disponibles:
+
+    - Cortar
+
+    - Plancha
+
+    -
+    Salix Book
+
+    - Final
+
+'
+--- !u!1 &323552162
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 323552163}
+  - component: {fileID: 323552164}
+  - component: {fileID: 323552165}
+  m_Layer: 0
+  m_Name: verdurasCortadas
+  m_TagString: Ingrediente
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &323552163
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323552162}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -8.85, y: 0, z: -5.13}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 396299349}
+  m_Father: {fileID: 1463528395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &323552164
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323552162}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.23, y: 5.75, z: 0.20000002}
+  m_Center: {x: -6.41, y: 0.23, z: 0}
+--- !u!114 &323552165
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 323552162}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c1cb13cf2431f4abb007abe0e99707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IngredienteCondicional
+  minijuegoRequerido: Final
+  mostrarAntesDeCompletar: 1
+  mostrarDespuesDeCompletar: 0
+  ingredientes:
+  - {fileID: 323552162}
+  minijuegosDisponibles: 'Minijuegos disponibles:
+
+    - Cortar
+
+    - Plancha
+
+    -
+    Salix Book
+
+    - Final
+
+'
+--- !u!1 &396299348
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 396299349}
+  - component: {fileID: 396299350}
+  m_Layer: 0
+  m_Name: Plato
+  m_TagString: Ingrediente
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &396299349
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396299348}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0.4905935, y: -0, z: -0, w: 0.8713886}
+  m_LocalPosition: {x: -6.8900013, y: 0.37, z: 0.51}
+  m_LocalScale: {x: 0.64, y: 0.64, z: 0.64}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 323552163}
+  m_LocalEulerAnglesHint: {x: 58.759, y: 0, z: 0}
+--- !u!212 &396299350
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 396299348}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: -708985061, guid: d5485b8113c0bca498102899cf15b718, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &413949458
 GameObject:
   m_ObjectHideFlags: 0
@@ -629,7 +923,7 @@ Transform:
   m_ConstrainProportionsScale: 1
   m_Children:
   - {fileID: 1848752168}
-  m_Father: {fileID: 1463528395}
+  m_Father: {fileID: 614889306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &413949460
 BoxCollider:
@@ -792,7 +1086,7 @@ Transform:
   m_Children:
   - {fileID: 37116695}
   - {fileID: 724502021}
-  m_Father: {fileID: 1463528395}
+  m_Father: {fileID: 614889306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &491280329
 BoxCollider:
@@ -932,6 +1226,72 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 8.29, y: 9.6, z: 0.2}
   m_Center: {x: 0, y: 0.21133333, z: 0}
+--- !u!1 &614889305
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 614889306}
+  - component: {fileID: 614889307}
+  m_Layer: 0
+  m_Name: IngredientesGrupo1
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &614889306
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614889305}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: 0, y: 0, z: 0}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children:
+  - {fileID: 1366310974}
+  - {fileID: 491280328}
+  - {fileID: 413949459}
+  - {fileID: 1699952379}
+  - {fileID: 1618718619}
+  m_Father: {fileID: 1463528395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &614889307
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 614889305}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c1cb13cf2431f4abb007abe0e99707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IngredienteCondicional
+  minijuegoRequerido: Cortar
+  mostrarAntesDeCompletar: 1
+  mostrarDespuesDeCompletar: 0
+  ingredientes:
+  - {fileID: 614889305}
+  minijuegosDisponibles: 'Minijuegos disponibles:
+
+    - Cortar
+
+    - Plancha
+
+    -
+    Salix Book
+
+    - Final
+
+'
 --- !u!1 &705074327
 GameObject:
   m_ObjectHideFlags: 0
@@ -1097,6 +1457,90 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!1 &945066570
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 945066571}
+  - component: {fileID: 945066572}
+  - component: {fileID: 945066573}
+  m_Layer: 0
+  m_Name: Secreto_cocinado
+  m_TagString: Ingrediente
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &945066571
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945066570}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 5.53, y: 0, z: -5.13}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 1145415920}
+  m_Father: {fileID: 1463528395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &945066572
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945066570}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.7, y: 3.23, z: 0.2}
+  m_Center: {x: 0, y: -0.01, z: 0}
+--- !u!114 &945066573
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 945066570}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c1cb13cf2431f4abb007abe0e99707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IngredienteCondicional
+  minijuegoRequerido: Plancha
+  mostrarAntesDeCompletar: 0
+  mostrarDespuesDeCompletar: 1
+  ingredientes:
+  - {fileID: 945066570}
+  minijuegosDisponibles: 'Minijuegos disponibles:
+
+    - Cortar
+
+    - Plancha
+
+    -
+    Salix Book
+
+    - Final
+
+'
 --- !u!1 &952697518
 GameObject:
   m_ObjectHideFlags: 0
@@ -1240,7 +1684,91 @@ BoxCollider:
   m_Enabled: 1
   serializedVersion: 3
   m_Size: {x: 8.29, y: 9.6, z: 0.2}
-  m_Center: {x: 0, y: 0.21133333, z: 0}
+  m_Center: {x: 4.86, y: 1.48, z: 9.21}
+--- !u!1 &1106758161
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1106758162}
+  - component: {fileID: 1106758164}
+  - component: {fileID: 1106758163}
+  m_Layer: 0
+  m_Name: verdurasCocinadas
+  m_TagString: Ingrediente
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1106758162
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106758161}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -3.39, y: 0, z: -5.13}
+  m_LocalScale: {x: 0.4, y: 0.4, z: 0.4}
+  m_ConstrainProportionsScale: 1
+  m_Children:
+  - {fileID: 180413800}
+  m_Father: {fileID: 1463528395}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!114 &1106758163
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106758161}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: f6c1cb13cf2431f4abb007abe0e99707, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::IngredienteCondicional
+  minijuegoRequerido: Salix Book
+  mostrarAntesDeCompletar: 0
+  mostrarDespuesDeCompletar: 1
+  ingredientes:
+  - {fileID: 1106758161}
+  minijuegosDisponibles: 'Minijuegos disponibles:
+
+    - Cortar
+
+    - Plancha
+
+    -
+    Salix Book
+
+    - Final
+
+'
+--- !u!65 &1106758164
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1106758161}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 6.23, y: 5.75, z: 0.20000002}
+  m_Center: {x: -6.41, y: 0.23, z: 0}
 --- !u!1 &1116543819
 GameObject:
   m_ObjectHideFlags: 0
@@ -1320,6 +1848,96 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1145415919
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1145415920}
+  - component: {fileID: 1145415921}
+  m_Layer: 0
+  m_Name: Plato
+  m_TagString: Ingrediente
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1145415920
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145415919}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: 0, y: 0.2, z: 0}
+  m_LocalScale: {x: 0.64, y: 0.64, z: 0.64}
+  m_ConstrainProportionsScale: 1
+  m_Children: []
+  m_Father: {fileID: 945066571}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!212 &1145415921
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1145415919}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 955396077, guid: 46a3fedd79a274e429f46c704665017a, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1168928978
 GameObject:
   m_ObjectHideFlags: 0
@@ -1348,7 +1966,7 @@ Transform:
   m_GameObject: {fileID: 1168928978}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0, z: 1.19}
+  m_LocalPosition: {x: -9.75, y: 0, z: 5.3}
   m_LocalScale: {x: 0.54, y: 0.54, z: 0.54}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -1595,7 +2213,7 @@ Transform:
   m_LocalScale: {x: 1.1541594, y: 1.1541594, z: 1.1541594}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1463528395}
+  m_Father: {fileID: 614889306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1366310975
 BoxCollider:
@@ -1839,13 +2457,125 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children:
-  - {fileID: 1366310974}
   - {fileID: 194175484}
-  - {fileID: 1699952379}
-  - {fileID: 413949459}
-  - {fileID: 491280328}
+  - {fileID: 945066571}
+  - {fileID: 323552163}
+  - {fileID: 1106758162}
+  - {fileID: 614889306}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1618718618
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1618718619}
+  - component: {fileID: 1618718621}
+  - component: {fileID: 1618718620}
+  m_Layer: 0
+  m_Name: Cebolla
+  m_TagString: Ingrediente
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!4 &1618718619
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618718618}
+  serializedVersion: 2
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
+  m_LocalPosition: {x: -4.73, y: 0, z: -4.98}
+  m_LocalScale: {x: 1.1541594, y: 1.1541594, z: 1.1541594}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 614889306}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!65 &1618718620
+BoxCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618718618}
+  m_Material: {fileID: 0}
+  m_IncludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_ExcludeLayers:
+    serializedVersion: 2
+    m_Bits: 0
+  m_LayerOverridePriority: 0
+  m_IsTrigger: 0
+  m_ProvidesContacts: 0
+  m_Enabled: 1
+  serializedVersion: 3
+  m_Size: {x: 1.04, y: 0.87, z: 0.2}
+  m_Center: {x: 0, y: -0.01, z: 0}
+--- !u!212 &1618718621
+SpriteRenderer:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1618718618}
+  m_Enabled: 1
+  m_CastShadows: 0
+  m_ReceiveShadows: 0
+  m_DynamicOccludee: 1
+  m_StaticShadowCaster: 0
+  m_MotionVectors: 1
+  m_LightProbeUsage: 1
+  m_ReflectionProbeUsage: 1
+  m_RayTracingMode: 0
+  m_RayTraceProcedural: 0
+  m_RayTracingAccelStructBuildFlagsOverride: 0
+  m_RayTracingAccelStructBuildFlags: 1
+  m_SmallMeshCulling: 1
+  m_ForceMeshLod: -1
+  m_MeshLodSelectionBias: 0
+  m_RenderingLayerMask: 1
+  m_RendererPriority: 0
+  m_Materials:
+  - {fileID: 10754, guid: 0000000000000000f000000000000000, type: 0}
+  m_StaticBatchInfo:
+    firstSubMesh: 0
+    subMeshCount: 0
+  m_StaticBatchRoot: {fileID: 0}
+  m_ProbeAnchor: {fileID: 0}
+  m_LightProbeVolumeOverride: {fileID: 0}
+  m_ScaleInLightmap: 1
+  m_ReceiveGI: 1
+  m_PreserveUVs: 0
+  m_IgnoreNormalsForChartDetection: 0
+  m_ImportantGI: 0
+  m_StitchLightmapSeams: 1
+  m_SelectedEditorRenderState: 0
+  m_MinimumChartSize: 4
+  m_AutoUVMaxDistance: 0.5
+  m_AutoUVMaxAngle: 89
+  m_LightmapParameters: {fileID: 0}
+  m_GlobalIlluminationMeshLod: 0
+  m_SortingLayerID: 0
+  m_SortingLayer: 0
+  m_SortingOrder: 0
+  m_Sprite: {fileID: 21300000, guid: 114808f9706ccc741a3268774ce10e0c, type: 3}
+  m_Color: {r: 1, g: 1, b: 1, a: 1}
+  m_FlipX: 0
+  m_FlipY: 0
+  m_DrawMode: 0
+  m_Size: {x: 1, y: 1}
+  m_AdaptiveModeThreshold: 0.5
+  m_SpriteTileMode: 0
+  m_WasSpriteAssigned: 1
+  m_MaskInteraction: 0
+  m_SpriteSortPoint: 0
 --- !u!1 &1699952378
 GameObject:
   m_ObjectHideFlags: 0
@@ -1877,7 +2607,7 @@ Transform:
   m_LocalScale: {x: 1.1541594, y: 1.1541594, z: 1.1541594}
   m_ConstrainProportionsScale: 0
   m_Children: []
-  m_Father: {fileID: 1463528395}
+  m_Father: {fileID: 614889306}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!65 &1699952380
 BoxCollider:
@@ -6852,6 +7582,100 @@ Transform:
   m_Children: []
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: -267.734, y: 83.107, z: -96.888}
+--- !u!1 &1729221802
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1729221804}
+  - component: {fileID: 1729221803}
+  m_Layer: 0
+  m_Name: mainmanager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1729221803
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729221802}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 87610db801e0dc7408e111d2e17f15b3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::ActualizadorIngredientes
+--- !u!4 &1729221804
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1729221802}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.58388, y: 0, z: 4.63984}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
+--- !u!1 &1802463330
+GameObject:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  serializedVersion: 6
+  m_Component:
+  - component: {fileID: 1802463332}
+  - component: {fileID: 1802463331}
+  m_Layer: 0
+  m_Name: MinigameProgressManager
+  m_TagString: Untagged
+  m_Icon: {fileID: 0}
+  m_NavMeshLayer: 0
+  m_StaticEditorFlags: 0
+  m_IsActive: 1
+--- !u!114 &1802463331
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802463330}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4390f744d8b5ed547850448fbd2a7829, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::MinigameProgressManager
+  guardarProgreso: 1
+  nombresMinijuegos:
+  - Cortar
+  - Plancha
+  - Salix Book
+  - Final
+--- !u!4 &1802463332
+Transform:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1802463330}
+  serializedVersion: 2
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalPosition: {x: -3.58388, y: 0, z: 4.63984}
+  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_ConstrainProportionsScale: 0
+  m_Children: []
+  m_Father: {fileID: 0}
+  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!20 &1823688466 stripped
 Camera:
   m_CorrespondingSourceObject: {fileID: 6458876419808435904, guid: 178af8ea755e0dc4cb293dec4d7734c7, type: 3}
@@ -7001,6 +7825,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1855058424}
   - component: {fileID: 1855058425}
+  - component: {fileID: 1855058426}
   m_Layer: 0
   m_Name: Horno
   m_TagString: Untagged
@@ -7017,7 +7842,7 @@ Transform:
   m_GameObject: {fileID: 1855058423}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 2.61, z: 0}
+  m_LocalPosition: {x: 4.84, y: 2.61, z: 8.02}
   m_LocalScale: {x: 2.12, y: 2.12, z: 2.12}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -7081,6 +7906,37 @@ SpriteRenderer:
   m_WasSpriteAssigned: 1
   m_MaskInteraction: 0
   m_SpriteSortPoint: 0
+--- !u!114 &1855058426
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1855058423}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e7dc9e6ba5c9d0b43bf52dc110697587, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::UtensilioMinijuegoTimer
+  nombreMinijuego: Salix Book
+  ingredienteRequerido: {fileID: 323552162}
+  ingredienteSiGanas: {fileID: 1106758161}
+  ingredienteSiPierdes: {fileID: 1106758161}
+  tiempoEspera: 5
+  margenExito: 10
+  radioDeteccion: 2.83
+  tagIngrediente: Ingrediente
+  ignorarTag: 0
+  timerCanvasPrefab: {fileID: 0}
+  timerOffset: {x: -0.15, y: 0.88, z: -1.45}
+  fuenteTimer: {fileID: 12800000, guid: a7dcf0bfebb5eee498a85378547edba8, type: 3}
+  colorNormal: {r: 1, g: 1, b: 1, a: 1}
+  colorProcesando: {r: 1, g: 0.92156863, b: 0.015686275, a: 1}
+  colorListo: {r: 0, g: 1, b: 0, a: 1}
+  colorFallido: {r: 1, g: 0, b: 0, a: 1}
+  sonidoIniciar: {fileID: 0}
+  sonidoCompletado: {fileID: 0}
+  sonidoFallado: {fileID: 0}
 --- !u!1 &1870364048
 GameObject:
   m_ObjectHideFlags: 0
@@ -7109,7 +7965,7 @@ Transform:
   m_GameObject: {fileID: 1870364048}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 12.85, y: 0, z: 1.19}
+  m_LocalPosition: {x: 12.78, y: 0, z: 5.21}
   m_LocalScale: {x: 2.42, y: 2.42, z: 2.42}
   m_ConstrainProportionsScale: 1
   m_Children: []
@@ -7212,6 +8068,7 @@ MonoBehaviour:
   - {fileID: 1699952378}
   - {fileID: 413949458}
   - {fileID: 491280327}
+  - {fileID: 1618718618}
   colorCorrecto: {r: 0.3, g: 1, b: 0.3, a: 0.5}
   colorIncorrecto: {r: 1, g: 0.3, b: 0.3, a: 0.5}
   duracionShake: 0.3
@@ -7870,3 +8727,5 @@ SceneRoots:
   - {fileID: 166783871}
   - {fileID: 1463528395}
   - {fileID: 1290786275}
+  - {fileID: 1729221804}
+  - {fileID: 1802463332}
