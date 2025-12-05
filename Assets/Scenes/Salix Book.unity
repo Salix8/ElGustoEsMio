@@ -8229,7 +8229,7 @@ MonoBehaviour:
   ingredienteRequerido: {fileID: 323552162}
   ingredienteSiGanas: {fileID: 1106758161}
   ingredienteSiPierdes: {fileID: 1106758161}
-  tiempoEspera: 5
+  tiempoEspera: 30
   margenExito: 10
   radioDeteccion: 3.66
   tagIngrediente: Ingrediente
