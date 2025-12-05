@@ -42,6 +42,9 @@ public class MinigameProgressManager : MonoBehaviour
 
     // Minijuego actual en ejecución
     private string minijuegoActual = "";
+    
+    // Puntuación media global
+    public int puntuacionMedia = 0;
 
     void Awake()
     {
@@ -415,8 +418,8 @@ public class MinigameProgressManager : MonoBehaviour
     /// <param name="escenaFinal">Nombre de la escena de finalización (ej: "PantallaFinal", "Resultados")</param>
     public void FinalizarJuego(string escenaFinal = "PantallaFinal")
     {
-        // Calcular puntuación media
-        int puntuacionMedia = CalcularPuntuacionMedia();
+        // Calcular y guardar puntuación media global
+        puntuacionMedia = CalcularPuntuacionMedia();
         
         // Guardar puntuación final en PlayerPrefs
         PlayerPrefs.SetInt("PuntuacionFinal", puntuacionMedia);
