@@ -84,7 +84,7 @@ public class FoodSwitcher : MonoBehaviour
                 questBookManager.ShowMinigameResult("Objetivo: cortar verduras", averageScore, "Has completado el minijuego de cortar las verduras.");
             }
         }
-
+        if(nextIndex >= foodImages.Length) return;
         StartCoroutine(SwitchFoodAnimated(currentIndex, nextIndex));
 
         currentIndex = nextIndex;
