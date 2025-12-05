@@ -25,180 +25,172 @@ public class QuestBookManager : MonoBehaviour
 
     [Header("Datos de Misiones (Test)")]
     [Tooltip("La lista de todas las misiones del jugador. Rellénala desde el inspector para probar.")]
-    public List<QuestTask> allQuests;
+        public List<QuestTask> allQuests;
 
-    [Header("Prefab y Contenedor de UI")]
-    [Tooltip("Arrastra aquí el *Prefab* de 'QuestItem_Template' desde tu ventana de Project.")]
+        public int LastShownScore { get; private set; } // Variable para guardar la última puntuación
 
+        public static QuestBookManager Instance { get; private set; } // Propiedad para el Singleton
 
-
-    public MinigameProgressManager minigameProgressManager;
-
-    private bool isBookOpen = false;
-
-    // --- (TEST) ---
-    void Start()
-    {
-        // Si la lista está vacía, añadimos datos de prueba
-        if (allQuests == null || allQuests.Count == 0)
+        void Awake()
         {
-            Debug.Log("No hay misiones. Creando misiones de prueba.");
-            allQuests = new List<QuestTask>();
-            allQuests.Add(new QuestTask("Coloca las verduras en la tabla de cortar"));
-            allQuests.Add(new QuestTask("Cocina la verdura cortada en el horno"));
-            allQuests.Add(new QuestTask("Cocina el secreto en la plancha"));
-            allQuests.Add(new QuestTask("Emplata el milhojas de  verduras"));
-        }
-        if (minigameProgressManager == null)
-        {
-            minigameProgressManager = FindObjectOfType<MinigameProgressManager>();
-        }
-        if (minigameProgressManager != null)
-        {
-            for (int i = 0; i < minigameProgressManager.ContarMinijuegosCompletados(); i++)
+            // Configuración del patrón Singleton
+            if (Instance == null)
             {
-                allQuests[i].isCompleted = true;
-            }
-        }
-    }
-    // --- (TEST) ---
-
-    void Update()
-    {
-        // Para pruebas rápidas: abrir/cerrar el libro con la tecla B
-        if (Input.GetKeyDown(KeyCode.B))
-        {
-            ToggleBook();
-        }
-
-        // Para pruebas rápidas: mostrar puntuación con la tecla P
-        if (Input.GetKeyDown(KeyCode.P))
-        {
-            ShowMinigameResult("Objetivo: sofreír", Random.Range(50, 500), "Descripción de prueba");
-        }
-    }
-
-    /// <summary>
-    /// Alterna la visibilidad del libro, mostrando SIEMPRE la lista de misiones (vista por defecto).
-    /// Esta es la función que debe llamar tu botón de la UI.
-    /// </summary>
-    public void ToggleBook()
-    {
-        if (bookAnimator == null)
-        {
-            Debug.LogError("No has asignado el BookAnimator en el QuestBookManager.");
-            return;
-        }
-
-        // Si el libro se va a abrir, preparamos la vista de misiones
-        if (!bookAnimator.IsBookOpen())
-        {
-            PrepareQuestListView();
-        }
-
-        // Le decimos al animador que se mueva
-        bookAnimator.ToggleBook();
-    }
-
-    /// <summary>
-    /// Muestra el resultado de un minijuego en el libro.
-    /// Si el libro está cerrado, lo abre. Si ya está abierto, solo actualiza el contenido.
-    /// </summary>
-    public void ShowMinigameResult(string minigameName, int score, string description)
-    {
-        if (bookAnimator == null)
-        {
-            Debug.LogError("No has asignado el BookAnimator en el QuestBookManager.");
-            return;
-        }
-
-        // 1. Preparar la vista de puntuación
-        PrepareScoreView(minigameName, score, description);
-        // 2. Si el libro está cerrado, lo abrimos.
-        if (!bookAnimator.IsBookOpen())
-        {
-            bookAnimator.ToggleBook();
-        }
-    }
-
-    /// <summary>
-    /// Prepara el libro para mostrar la lista de misiones.
-    /// </summary>
-    private void PrepareQuestListView()
-    {
-        if (questItemPrefab == null || taskListContainer == null)
-        {
-            Debug.LogError("No has asignado 'questItemPrefab' o 'taskListContainer' en el QuestBookManager.");
-            return;
-        }
-
-        // 1. Activar el contenedor de misiones y desactivar el de puntuación
-        if(scoreUIContainer != null) scoreUIContainer.SetActive(false);
-        if(taskListContainer != null) taskListContainer.SetActive(true);
-
-        // 2. Limpiar la lista de misiones anterior
-        foreach (Transform child in taskListContainer.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // --- (TEST) ---
-        if (allQuests == null || allQuests.Count == 0)
-        {
-            allQuests = new List<QuestTask> { new QuestTask("No hay misiones de prueba.") };
-        }
-        // --- (TEST) ---
-
-        // 3. Crear los items de la lista de misiones actualizada
-        foreach (QuestTask taskData in allQuests)
-        {
-            GameObject questItemObject = Instantiate(questItemPrefab, taskListContainer.transform);
-            QuestItemUI uiItem = questItemObject.GetComponent<QuestItemUI>();
-
-            if (uiItem != null)
-            {
-                uiItem.Setup(taskData);
+                Instance = this;
             }
             else
             {
-                Debug.LogError("El prefab 'questItemPrefab' NO tiene el script QuestItemUI!");
+                Destroy(gameObject);
             }
         }
+
+        void Start()
+        {
+            // Asegurarse de que ambos contenedores están en un estado inicial correcto
+            if(taskListContainer != null) taskListContainer.SetActive(true);
+            if(scoreUIContainer != null) scoreUIContainer.SetActive(false);
+        }
+
+        void Update()
+        {
+            // Para pruebas rápidas: abrir/cerrar el libro con la tecla B
+            if (Input.GetKeyDown(KeyCode.B))
+            {
+                ToggleBook();
+            }
+
+            // Para pruebas rápidas: mostrar puntuación con la tecla P
+            if (Input.GetKeyDown(KeyCode.P))
+            {
+                LastShownScore = Random.Range(50, 500);
+                ShowMinigameResult("Minijuego de Prueba", LastShownScore, "Descripción de prueba");
+            }
+        }
+
+        /// <summary>
+        /// Alterna la visibilidad del libro, mostrando SIEMPRE la lista de misiones (vista por defecto).
+        /// Esta es la función que debe llamar tu botón de la UI.
+        /// </summary>
+        public void ToggleBook()
+        {
+            if (bookAnimator == null)
+            {
+                Debug.LogError("No has asignado el BookAnimator en el QuestBookManager.");
+                return;
+            }
+
+            // Si el libro se va a abrir, preparamos la vista de misiones
+            if (!bookAnimator.IsBookOpen())
+            {
+                PrepareQuestListView();
+            }
+
+            // Le decimos al animador que se mueva
+            bookAnimator.ToggleBook();
+        }
+
+        /// <summary>
+        /// Muestra el resultado de un minijuego en el libro.
+        /// Si el libro está cerrado, lo abre. Si ya está abierto, solo actualiza el contenido.
+        /// </summary>
+        public void ShowMinigameResult(string minigameName, int score, string description)
+        {
+            if (bookAnimator == null)
+            {
+                Debug.LogError("No has asignado el BookAnimator en el QuestBookManager.");
+                return;
+            }
+
+            // 1. Preparar la vista de puntuación
+            PrepareScoreView(minigameName, score, description);
+            // 2. Si el libro está cerrado, lo abrimos.
+            if (!bookAnimator.IsBookOpen())
+            {
+                bookAnimator.ToggleBook();
+            }
+        }
+
+        /// <summary>
+        /// Prepara el libro para mostrar la lista de misiones.
+        /// </summary>
+        private void PrepareQuestListView()
+        {
+            if (questItemPrefab == null || taskListContainer == null)
+            {
+                Debug.LogError("No has asignado 'questItemPrefab' o 'taskListContainer' en el QuestBookManager.");
+                return;
+            }
+
+            // 1. Activar el contenedor de misiones y desactivar el de puntuación
+            if(scoreUIContainer != null) scoreUIContainer.SetActive(false);
+            if(taskListContainer != null) taskListContainer.SetActive(true);
+
+            // 2. Limpiar la lista de misiones anterior
+            foreach (Transform child in taskListContainer.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            // --- (TEST) ---
+            if (allQuests == null || allQuests.Count == 0)
+            {
+                allQuests = new List<QuestTask> { new QuestTask("No hay misiones de prueba.") };
+            }
+            // --- (TEST) ---
+
+            // 3. Crear los items de la lista de misiones actualizada
+            foreach (QuestTask taskData in allQuests)
+            {
+                GameObject questItemObject = Instantiate(questItemPrefab, taskListContainer.transform);
+                QuestItemUI uiItem = questItemObject.GetComponent<QuestItemUI>();
+
+                if (uiItem != null)
+                {
+                    uiItem.Setup(taskData);
+                }
+                else
+                {
+                    Debug.LogError("El prefab 'questItemPrefab' NO tiene el script QuestItemUI!");
+                }
+            }
+        }
+
+        /// <summary>
+        /// Prepara el libro para mostrar la puntuación de un minijuego.
+        /// </summary>
+        private void PrepareScoreView(string minigameName, int score, string description)
+        {
+            if (scoreUIPrefab == null || scoreUIContainer == null)
+            {
+                Debug.LogError("El 'scoreUIPrefab' o 'scoreUIContainer' no están asignados en el QuestBookManager.");
+                return;
+            }
+
+            // Guardamos la puntuación para que otros scripts puedan acceder a ella
+            LastShownScore = score;
+
+            // 1. Activar el contenedor de puntuación y desactivar el de misiones
+            if(taskListContainer != null) taskListContainer.SetActive(false);
+            if(scoreUIContainer != null) scoreUIContainer.SetActive(true);
+
+            // 2. Limpiar resultados anteriores
+            foreach (Transform child in scoreUIContainer.transform)
+            {
+                Destroy(child.gameObject);
+            }
+
+            // 3. Crear el nuevo objeto de puntuación
+            GameObject scoreObject = Instantiate(scoreUIPrefab, scoreUIContainer.transform);
+            ScoreItemUI scoreUI = scoreObject.GetComponent<ScoreItemUI>();
+
+            if (scoreUI != null)
+            {
+                scoreUI.Setup($"¡{minigameName} completado!", $"Puntuación final: {score}", $"{description}");
+            }
+            else
+            {
+                Debug.LogError("El prefab 'scoreUIPrefab' no tiene el script 'ScoreItemUI'.");
+            }
+
+        }
     }
-
-    /// <summary>
-    /// Prepara el libro para mostrar la puntuación de un minijuego.
-    /// </summary>
-    private void PrepareScoreView(string minigameName, int score, string description)
-    {
-        if (scoreUIPrefab == null || scoreUIContainer == null)
-        {
-            Debug.LogError("El 'scoreUIPrefab' o 'scoreUIContainer' no están asignados en el QuestBookManager.");
-            return;
-        }
-
-        // 1. Activar el contenedor de puntuación y desactivar el de misiones
-        if(taskListContainer != null) taskListContainer.SetActive(false);
-        if(scoreUIContainer != null) scoreUIContainer.SetActive(true);
-
-        // 2. Limpiar resultados anteriores
-        foreach (Transform child in scoreUIContainer.transform)
-        {
-            Destroy(child.gameObject);
-        }
-
-        // 3. Crear el nuevo objeto de puntuación
-        GameObject scoreObject = Instantiate(scoreUIPrefab, scoreUIContainer.transform);
-        ScoreItemUI scoreUI = scoreObject.GetComponent<ScoreItemUI>();
-
-        if (scoreUI != null)
-        {
-            scoreUI.Setup($"¡{minigameName} completado!", $"Puntuación final: {score}", $"{description}");
-        }
-        else
-        {
-            Debug.LogError("El prefab 'scoreUIPrefab' no tiene el script 'ScoreItemUI'.");
-        }
-
-    }
-}
