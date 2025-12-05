@@ -92,7 +92,7 @@ public class Plate : MonoBehaviour
         if (questBookManager != null)
         {
             // Convertimos el score a un entero para mostrarlo, pero puedes cambiarlo si lo necesitas.
-            questBookManager.ShowMinigameResult("Objetivo: sofreír", (int)averageScore, "Has completado el minijuego de sofreír.");
+            questBookManager.ShowMinigameResult("Objetivo: sofreír", (int)averageScore, "¡Lo has clavado, Chef! Has manejado la plancha con una maestría increíble. El solomillo ha entrado en contacto con el calor extremo de la plancha, logrando ese sellado exterior dorado y crujiente que todo buen cocinero persigue. Has conseguido que las altas temperaturas caramelicen la superficie, creando una costra espectacular que actúa como un escudo. Esta costra sella todos los jugos internos del solomillo, asegurando que cada bocado sea de una ternura y jugosidad que te harán ganar la admiración de cualquier crítico culinario.");
         }
     }
 
