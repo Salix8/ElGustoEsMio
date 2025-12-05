@@ -1373,6 +1373,29 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -94.285
       objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.data[0].taskDescription
+      value: 'Paso 1: Coger la carne y ponerla en la plancha'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.data[1].taskDescription
+      value: 'Paso 2: Pulsar en la espatula, posteriormente pulsar en el solomillo
+        (dale la vuelta antes de que se te queme)'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.data[2].taskDescription
+      value: 'Paso 3: Sacar de la plancha antes de que se te queme cualquiera de
+        los lados'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.data[3].taskDescription
+      value: 'Paso 4: Dejar el solomillo en el plato (cuando tengas los 3 solomillos
+        dentro del plato, pasaremos al siguiente paso)'
+      objectReference: {fileID: 0}
     - target: {fileID: 6222070661347534106, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
       propertyPath: m_fontAsset
       value: 
@@ -1581,6 +1604,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: Espatula
       objectReference: {fileID: 0}
+    - target: {fileID: 2181278817739706272, guid: 6613f8485027e73498bb3020f6b7f96f, type: 3}
+      propertyPath: m_Sprite
+      value: 
+      objectReference: {fileID: 21300000, guid: 1b8855ddc8b05104d93238e7a7ee0cac, type: 3}
     - target: {fileID: 2608458813647417383, guid: 6613f8485027e73498bb3020f6b7f96f, type: 3}
       propertyPath: m_Pivot.x
       value: 0.5
