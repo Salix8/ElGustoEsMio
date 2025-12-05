@@ -21,10 +21,18 @@ public class minijuegofinal : MonoBehaviour
     [Header("Personalización Platos y UI")]
     [Tooltip("Sprite para los platos (Origen y Objetivo). Si vacío, usa placeholder.")]
     public Sprite plateSprite;
-    [Tooltip("Multiplicador de tamaño para el sprite del plato.")]
+    [Tooltip("Multiplicador de tamaño para el sprite del plato objetivo (base).")]
     public float plateScaleMultiplier = 1f;
+    [Tooltip("Multiplicador de tamaño para los platos de origen (lateral).")]
+    public float sourcePlateScaleMultiplier = 0.5f;
+    [Tooltip("Posición X de los platos de origen (lateral derecha).")]
+    public float sourcePlatesXPosition = 6.5f;
     [Tooltip("Sprite para el fondo de los paneles de UI. Si vacío, se genera proceduralmente.")]
     public Sprite uiPanelSprite;
+    [Tooltip("Fuente personalizada para toda la UI. Si vacío, usa fuente por defecto.")]
+    public Font customFont;
+    [Tooltip("Rotación Z de los ingredientes en los platos de origen (en grados).")]
+    public float ingredientRotation = 0f;
 
     [System.Serializable]
     public struct IngredientType {
@@ -39,9 +47,11 @@ public class minijuegofinal : MonoBehaviour
         public Vector2 sizeIfNoSprite; 
         public float mass;
         public float bounciness;
+        [Tooltip("Rotación Z del ingrediente cuando cae (en grados).")]
+        public float dropRotation;
 
         public IngredientType(int i, string n, Color c, float scale, float m, float b) {
-            id = i; name = n; color = c; scaleMultiplier = scale; sizeIfNoSprite = new Vector2(3, 0.3f); mass = m; bounciness = b; sprite = null;
+            id = i; name = n; color = c; scaleMultiplier = scale; sizeIfNoSprite = new Vector2(3, 0.3f); mass = m; bounciness = b; sprite = null; dropRotation = 0f;
         }
     }
 
@@ -214,20 +224,39 @@ public class minijuegofinal : MonoBehaviour
         currentHeldObject = new GameObject(type.name);
         currentHeldObject.transform.position = pos;
 
+        // Primero crear collider en el padre (sin rotación)
+        BoxCollider2D col = currentHeldObject.AddComponent<BoxCollider2D>();
+        
+        // Determinar tamaño del collider según sprite o tamaño manual
+        Vector2 colliderSize;
+        if (type.sprite != null)
+        {
+            float scale = (type.scaleMultiplier > 0) ? type.scaleMultiplier : 1f;
+            colliderSize = type.sprite.bounds.size * scale;
+        }
+        else
+        {
+            colliderSize = (type.sizeIfNoSprite != Vector2.zero) ? type.sizeIfNoSprite : new Vector2(3, 0.3f);
+        }
+        col.size = colliderSize;
+
+        // Ahora crear hijo visual con rotación
         GameObject vChild = new GameObject("Visuals");
         vChild.transform.parent = currentHeldObject.transform;
         vChild.transform.localPosition = Vector3.zero;
+        
+        // Aplicar rotación específica del tipo de ingrediente (solo al visual)
+        vChild.transform.localRotation = Quaternion.Euler(0, 0, type.dropRotation);
+        
         visualChild = vChild.transform;
 
         SpriteRenderer sr = vChild.AddComponent<SpriteRenderer>();
-        BoxCollider2D col = currentHeldObject.AddComponent<BoxCollider2D>();
         
         if (type.sprite != null)
         {
             sr.sprite = type.sprite;
             float scale = (type.scaleMultiplier > 0) ? type.scaleMultiplier : 1f;
             vChild.transform.localScale = new Vector3(scale, scale, 1);
-            col.size = type.sprite.bounds.size * scale;
         }
         else
         {
@@ -236,7 +265,6 @@ public class minijuegofinal : MonoBehaviour
             
             Vector2 size = (type.sizeIfNoSprite != Vector2.zero) ? type.sizeIfNoSprite : new Vector2(3, 0.3f);
             vChild.transform.localScale = new Vector3(size.x, size.y, 1);
-            col.size = size;
 
             GameObject border = new GameObject("Border");
             border.transform.parent = vChild.transform;
@@ -496,6 +524,9 @@ public class minijuegofinal : MonoBehaviour
         // Si usamos sprite custom, el collider debe adaptarse
         BoxCollider2D pCol = plate.AddComponent<BoxCollider2D>(); 
         if(plateSprite != null) pCol.size = plateSprite.bounds.size;
+        
+        // Ajustar offset del collider para mejor detección
+        pCol.offset = new Vector2(0, -0.48f);
 
         targetPlateRB = plate.AddComponent<Rigidbody2D>(); 
         targetPlateRB.bodyType = RigidbodyType2D.Kinematic; 
@@ -510,7 +541,7 @@ public class minijuegofinal : MonoBehaviour
     {
         float startY = 3.5f;
         float gapY = 1.2f;
-        float xPos = 6.5f;
+        float xPos = sourcePlatesXPosition;
 
         for (int i = 0; i < ingredients.Count; i++)
         {
@@ -528,8 +559,8 @@ public class minijuegofinal : MonoBehaviour
             if (plateSprite != null)
             {
                 pbs.sprite = plateSprite;
-                // Reducir un poco para que quepan en la lista lateral
-                float lateralScale = 0.5f * plateScaleMultiplier; 
+                // Usar multiplicador específico para platos laterales
+                float lateralScale = sourcePlateScaleMultiplier; 
                 plateBg.transform.localScale = new Vector3(lateralScale, lateralScale, 1);
             }
             else
@@ -543,6 +574,10 @@ public class minijuegofinal : MonoBehaviour
             GameObject sample = new GameObject("Muestra");
             sample.transform.parent = source.transform;
             sample.transform.localPosition = Vector3.zero;
+            
+            // Aplicar rotación configurada
+            sample.transform.localRotation = Quaternion.Euler(0, 0, ingredientRotation);
+            
             SpriteRenderer ssr = sample.AddComponent<SpriteRenderer>();
             
             if(ing.sprite != null) {
@@ -660,7 +695,13 @@ public class minijuegofinal : MonoBehaviour
         obj.transform.SetParent(parent, false);
         Text t = obj.AddComponent<Text>();
         t.text = content;
-        t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        
+        // Usar fuente personalizada si está asignada, sino usar la por defecto
+        if (customFont != null)
+            t.font = customFont;
+        else
+            t.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        
         t.fontSize = size;
         t.fontStyle = style;
         t.alignment = TextAnchor.MiddleCenter;
@@ -710,7 +751,13 @@ public class minijuegofinal : MonoBehaviour
         txtObj.transform.SetParent(mainCanvas.transform);
         Text txt = txtObj.AddComponent<Text>();
         txt.text = msg;
-        txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        
+        // Usar fuente personalizada si está asignada
+        if (customFont != null)
+            txt.font = customFont;
+        else
+            txt.font = Resources.GetBuiltinResource<Font>("LegacyRuntime.ttf");
+        
         txt.fontSize = 32;
         txt.fontStyle = FontStyle.Bold;
         txt.color = c;

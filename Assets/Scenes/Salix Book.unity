@@ -1355,7 +1355,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee08c86c83624ae4b83679291657c7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UtensilioMinijuego
-  escenaMinijuego: 
+  escenaMinijuego: Final
   ingredientesRequeridos:
   - {fileID: 945066570}
   - {fileID: 1106758161}
@@ -2309,7 +2309,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee08c86c83624ae4b83679291657c7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UtensilioMinijuego
-  escenaMinijuego: 
+  escenaMinijuego: Plancha
   ingredientesRequeridos:
   - {fileID: 194175483}
   colorCorrecto: {r: 0.3, g: 1, b: 0.3, a: 0.5}
@@ -8310,7 +8310,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ee08c86c83624ae4b83679291657c7c0, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::UtensilioMinijuego
-  escenaMinijuego: 
+  escenaMinijuego: Cortar
   ingredientesRequeridos:
   - {fileID: 1366310973}
   - {fileID: 1699952378}
