@@ -784,9 +784,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: f6c1cb13cf2431f4abb007abe0e99707, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::IngredienteCondicional
-  minijuegoRequerido: Final
-  mostrarAntesDeCompletar: 1
-  mostrarDespuesDeCompletar: 0
+  minijuegoRequerido: Cortar
+  mostrarAntesDeCompletar: 0
+  mostrarDespuesDeCompletar: 1
   ingredientes:
   - {fileID: 323552162}
   minijuegosDisponibles: 'Minijuegos disponibles:
@@ -1961,7 +1961,7 @@ Transform:
   m_GameObject: {fileID: 1085316904}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 22.13, y: 0, z: 1.19}
+  m_LocalPosition: {x: 19.48, y: 0, z: 0}
   m_LocalScale: {x: 0.5, y: 0.5, z: 0.5}
   m_ConstrainProportionsScale: 1
   m_Children:
@@ -1987,8 +1987,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 8.29, y: 9.6, z: 0.2}
-  m_Center: {x: 4.86, y: 2.47, z: 7.76}
+  m_Size: {x: 9.86, y: 16.66, z: 1}
+  m_Center: {x: 4.7, y: 1.11, z: 6.57}
 --- !u!1 &1106758161
 GameObject:
   m_ObjectHideFlags: 0
@@ -8836,6 +8836,14 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -170
       objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.size
+      value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: minigameProgressManager
+      value: 
+      objectReference: {fileID: 1802463331}
     - target: {fileID: 7232074140370376722, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
       propertyPath: m_Name
       value: Canvas Front

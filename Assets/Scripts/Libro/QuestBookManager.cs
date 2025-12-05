@@ -29,10 +29,8 @@ public class QuestBookManager : MonoBehaviour
 
     [Header("Prefab y Contenedor de UI")]
     [Tooltip("Arrastra aquí el *Prefab* de 'QuestItem_Template' desde tu ventana de Project.")]
-    public GameObject questItemPrefab;
 
-    [Tooltip("Arrastra aquí el panel (con Vertical Layout Group) donde se crearán los items de la lista.")]
-    public Transform taskListContainer;
+
 
     public MinigameProgressManager minigameProgressManager;
 
@@ -57,15 +55,9 @@ public class QuestBookManager : MonoBehaviour
         }
         if (minigameProgressManager != null)
         {
-            for (int i = 0; i < minigameProgressManager.nombresMinijuegos.Count; i++)
+            for (int i = 0; i < minigameProgressManager.ContarMinijuegosCompletados(); i++)
             {
-                if (minigameProgressManager.EstadoMinijuego(minigameProgressManager.nombresMinijuegos[i]) == MinigameProgressManager.MinijuegoEstado.Completado)
-                {
-                    Debug.Log($"Minijuego '{minigameProgressManager.nombresMinijuegos[i]}' completado. Marcando misión como completada.");
-                    // Marcar la misión correspondiente como completada
-                    quest.isCompleted = true;
-                      
-                }
+                allQuests[i].isCompleted = true;
             }
         }
     }
