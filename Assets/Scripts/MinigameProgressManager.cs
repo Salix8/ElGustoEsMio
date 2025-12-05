@@ -9,8 +9,6 @@ public class MinigameProgress
     public bool completado;
     public int puntuacion;
     public int intentos;
-
-    public int puntuacionMedia;
     
     // Para temporizadores persistentes
     public bool timerActivo;
@@ -44,6 +42,9 @@ public class MinigameProgressManager : MonoBehaviour
 
     // Minijuego actual en ejecución
     private string minijuegoActual = "";
+    
+    // Puntuación media global
+    public int puntuacionMedia = 0;
 
     void Awake()
     {
@@ -417,7 +418,7 @@ public class MinigameProgressManager : MonoBehaviour
     /// <param name="escenaFinal">Nombre de la escena de finalización (ej: "PantallaFinal", "Resultados")</param>
     public void FinalizarJuego(string escenaFinal = "PantallaFinal")
     {
-        // Calcular puntuación media
+        // Calcular y guardar puntuación media global
         puntuacionMedia = CalcularPuntuacionMedia();
         
         // Guardar puntuación final en PlayerPrefs
