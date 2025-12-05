@@ -1,5 +1,6 @@
 using UnityEngine;
 using UnityEngine.UI;
+using UnityEngine.SceneManagement;
 using System.Collections;
 using System.Collections.Generic;
 using System.Linq;
@@ -75,6 +76,7 @@ public class minijuegofinal : MonoBehaviour
     // Estado
     private bool isDragging = false;
     private bool gameOver = false;
+    private bool esperandoInputParaFinal = false; // Nueva variable para detectar input después de ganar
     private int stackCount = 0;
     private float currentRawScore = 0;
     private float highestPoint = -2.0f;
@@ -114,6 +116,16 @@ public class minijuegofinal : MonoBehaviour
 
     void Update()
     {
+        // Si estamos esperando input para ir a la escena final
+        if (esperandoInputParaFinal)
+        {
+            if (Input.GetMouseButtonDown(0) || (Input.touchCount > 0 && Input.GetTouch(0).phase == TouchPhase.Began))
+            {
+                IrAEscenaFinal();
+            }
+            return;
+        }
+
         if (gameOver) return;
         HandleInput();
         CheckWinCondition();
@@ -455,10 +467,33 @@ public class minijuegofinal : MonoBehaviour
             string description = $"Piezas apiladas: {stackCount}/{targetStackHeight}\nVariedad: {usedIngredientTypes.Count}/{ingredients.Count}\nCaídas: {droppedPieces}";
             
             questBookManager.ShowMinigameResult(title, finalGrade, description);
+            
+            // Activar espera de input para ir a escena final
+            esperandoInputParaFinal = true;
         }
         else
         {
             Debug.LogWarning("QuestBookManager no encontrado. No se puede mostrar el resultado.");
+            // Si no hay libro, ir directamente a la escena final
+            yield return new WaitForSeconds(2f);
+            IrAEscenaFinal();
+        }
+    }
+    
+    /// <summary>
+    /// Carga la escena final de victoria
+    /// </summary>
+    private void IrAEscenaFinal()
+    {
+        string escenaFinal = "EscenaFinal";
+        
+        if (Application.CanStreamedLevelBeLoaded(escenaFinal))
+        {
+            SceneManager.LoadScene(escenaFinal);
+        }
+        else
+        {
+            Debug.LogError($"La escena '{escenaFinal}' no está en Build Settings. Añádela en File > Build Settings.");
         }
     }
 
