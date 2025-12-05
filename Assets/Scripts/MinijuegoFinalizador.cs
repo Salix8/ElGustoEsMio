@@ -28,9 +28,8 @@ public class MinijuegoFinalizador : MonoBehaviour
         {
             Debug.LogWarning("MinigameProgressManager no encontrado.");
         }
-
-        Debug.LogError("ANTES DE VOLVER..." + escenaNivelPrincipal);
-        StartCoroutine(VolverAlNivelPrincipal());
+        Time.timeScale = 1f;
+        VolverAlNivelPrincipal();
     }
 
     /// <summary>
@@ -48,7 +47,7 @@ public class MinijuegoFinalizador : MonoBehaviour
             Debug.LogWarning("MinigameProgressManager no encontrado.");
         }
 
-        StartCoroutine(VolverAlNivelPrincipal());
+        VolverAlNivelPrincipal();
     }
 
     /// <summary>

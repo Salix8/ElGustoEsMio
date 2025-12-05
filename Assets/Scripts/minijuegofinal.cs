@@ -11,6 +11,8 @@ public class minijuegofinal : MonoBehaviour
     public float tableWidth = 10f;
     public float minDropHeight = 0.5f;
 
+    private QuestBookManager questBookManager;
+
     [Header("Dificultad")]
     public float plateMoveSpeed = 1.5f; // Velocidad del plato
     public float plateMoveRange = 2.5f; // Rango de movimiento
@@ -103,6 +105,8 @@ public class minijuegofinal : MonoBehaviour
                 new IngredientType(4, "Queso", new Color(1.0f, 0.9f, 0.4f), 1.0f, 0.8f, 0.1f)
             };
         }
+
+        questBookManager = FindObjectOfType<QuestBookManager>();
 
         SetupScene();
         SetupUI();
@@ -425,13 +429,12 @@ public class minijuegofinal : MonoBehaviour
     {
         yield return new WaitForSeconds(1.0f);
         if (activeIngredients.Count >= targetStackHeight && !gameOver)
-            GameOver(true);
+            StartCoroutine(GameOver(true));
     }
 
-    void GameOver(bool win)
+    IEnumerator GameOver(bool win)
     {
         gameOver = true;
-        restartButton.SetActive(true);
         
         float averageScore = stackCount > 0 ? currentRawScore / stackCount : 0;
         if (usedIngredientTypes.Count == ingredients.Count) averageScore += 20;
@@ -442,17 +445,21 @@ public class minijuegofinal : MonoBehaviour
         
         int finalGrade = Mathf.Clamp(Mathf.RoundToInt(finalScoreCalc), 0, 100);
 
-        string title = "RESULTADO";
-        string subtitle = "";
-        Color titleColor = Color.white;
+        // Esperar un poco antes de mostrar el libro
+        yield return new WaitForSeconds(0.5f);
 
-        if (finalGrade < 50) { title = "SUSPENSO"; subtitle = $"Se cayeron {droppedPieces} piezas"; titleColor = new Color(1f, 0.4f, 0.4f); }
-        else if (finalGrade < 80) { title = "ACEPTABLE"; subtitle = "Buen trabajo"; titleColor = new Color(1f, 0.9f, 0.4f); }
-        else { title = "¡EXCELENTE!"; subtitle = "Chef Maestro"; titleColor = new Color(0.4f, 1f, 0.4f); }
-
-        feedbackText.text = $"<size=50>{title}</size>\n<size=30>{subtitle}</size>\n\nNota: {finalGrade}/100";
-        feedbackText.color = titleColor;
-        feedbackText.transform.parent.gameObject.SetActive(true);
+        // Llamar al libro para que muestre el resultado
+        if (questBookManager != null)
+        {
+            string title = win ? "¡Milhojas Completado!" : "Juego Terminado";
+            string description = $"Piezas apiladas: {stackCount}/{targetStackHeight}\nVariedad: {usedIngredientTypes.Count}/{ingredients.Count}\nCaídas: {droppedPieces}";
+            
+            questBookManager.ShowMinigameResult(title, finalGrade, description);
+        }
+        else
+        {
+            Debug.LogWarning("QuestBookManager no encontrado. No se puede mostrar el resultado.");
+        }
     }
 
     public void RestartGame()
