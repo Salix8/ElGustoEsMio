@@ -3737,6 +3737,23 @@ PrefabInstance:
       propertyPath: m_AnchoredPosition.y
       value: -170
       objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.size
+      value: 4
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.data[0].taskDescription
+      value: 'Paso 1: Haz un trazo siguiendo la linea de puntos'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.data[1].taskDescription
+      value: 'Paso 2: Pulsa el boton siguiente para cambiar de verdura una vez la
+        hayas cortado en 3 partes'
+      objectReference: {fileID: 0}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: allQuests.Array.data[2].taskDescription
+      value: 'Paso 3: Repite el proceso hasta haber cortado las 5 verduras'
+      objectReference: {fileID: 0}
     - target: {fileID: 7232074140370376722, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
       propertyPath: m_Name
       value: Canvas Front
