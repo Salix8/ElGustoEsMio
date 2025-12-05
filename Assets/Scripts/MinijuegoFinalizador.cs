@@ -29,6 +29,7 @@ public class MinijuegoFinalizador : MonoBehaviour
             Debug.LogWarning("MinigameProgressManager no encontrado.");
         }
 
+        Debug.LogError("ANTES DE VOLVER..." + escenaNivelPrincipal);
         StartCoroutine(VolverAlNivelPrincipal());
     }
 
@@ -53,15 +54,13 @@ public class MinijuegoFinalizador : MonoBehaviour
     /// <summary>
     /// Vuelve al nivel principal después de un delay
     /// </summary>
-    private System.Collections.IEnumerator VolverAlNivelPrincipal()
+    private void VolverAlNivelPrincipal()
     {
-        yield return new WaitForSeconds(delayAntesDeVolver);
-
         if (!string.IsNullOrEmpty(escenaNivelPrincipal))
         {
             // Actualizar ingredientes visibles antes de volver
             ActualizarIngredientesCondicionales();
-            
+
             SceneManager.LoadScene(escenaNivelPrincipal);
         }
         else
