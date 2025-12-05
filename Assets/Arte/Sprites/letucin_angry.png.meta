@@ -1,5 +1,5 @@
 fileFormatVersion: 2
-guid: bc0c52407b8b9464db591cc8c073432a
+guid: dfef7a4c5bc9c9549af7ae0301af401d
 TextureImporter:
   internalIDToNameTable: []
   externalObjects: {}
@@ -110,13 +110,13 @@ TextureImporter:
     serializedVersion: 2
     sprites:
     - serializedVersion: 2
-      name: letucin_walk_0
+      name: letucin_angry_0
       rect:
         serializedVersion: 2
         x: 0
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -125,20 +125,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 63607ab167e9dfd4098ae51a9f5a4e4e
-      internalID: 537808801
+      spriteID: 64e050da12fc6714b9c7d37b8f2b04e2
+      internalID: -129784224
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_1
+      name: letucin_angry_1
       rect:
         serializedVersion: 2
-        x: 235
+        x: 252
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -147,20 +147,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 815f5a6cc12f608438594def492e3679
-      internalID: -88756609
+      spriteID: 4c52cf20c2ffad54d952e756d3c75a11
+      internalID: 249076892
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_2
+      name: letucin_angry_2
       rect:
         serializedVersion: 2
-        x: 470
+        x: 504
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -169,20 +169,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b5f6f6af51372394f80da0127cc8cfb2
-      internalID: 1196822254
+      spriteID: 45298d573b64a9c458fe2ee4dc21981a
+      internalID: 568738043
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_3
+      name: letucin_angry_3
       rect:
         serializedVersion: 2
-        x: 705
+        x: 756
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -191,20 +191,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b77673179675e8a4dad2a6d8126b1f24
-      internalID: -739149706
+      spriteID: 2880fc85960ed0d4f858c9ce6a5839ec
+      internalID: -1346314786
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_4
+      name: letucin_angry_4
       rect:
         serializedVersion: 2
-        x: 940
+        x: 1008
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -213,20 +213,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 75000f3d52c356d48b6113337f7b9a7d
-      internalID: 1807912321
+      spriteID: a20f04e3b3c8a7b49923b7d51ee086d4
+      internalID: 332462413
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_5
+      name: letucin_angry_5
       rect:
         serializedVersion: 2
-        x: 1175
+        x: 1260
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -235,20 +235,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 93b3c723a6b4b714398aef0e0150d27a
-      internalID: 977761408
+      spriteID: 8c80e1149136b82419f1ce933e801a0d
+      internalID: 536850079
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_6
+      name: letucin_angry_6
       rect:
         serializedVersion: 2
-        x: 1410
+        x: 1512
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -257,20 +257,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: a026104c25ac412418e734ba58673a30
-      internalID: -1126960168
+      spriteID: 13a248d4546881f439657cf562d83ff4
+      internalID: -375143959
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_7
+      name: letucin_angry_7
       rect:
         serializedVersion: 2
-        x: 1645
+        x: 1764
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -279,20 +279,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 02d759cc91123ec489320ea9c8bab8f9
-      internalID: -1297908651
+      spriteID: 0b1fdbd9659970b4e9fb03cfed3f7b2d
+      internalID: -1357654546
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_8
+      name: letucin_angry_8
       rect:
         serializedVersion: 2
-        x: 1880
+        x: 2016
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -301,20 +301,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: b65e61834c46118478cdf21890e16746
-      internalID: 2121940993
+      spriteID: 81805b5d02c243c448901a4c701edccd
+      internalID: 1352278923
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_9
+      name: letucin_angry_9
       rect:
         serializedVersion: 2
-        x: 2115
+        x: 2268
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -323,20 +323,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: cf70ac345574efd4eb3b0c34fadabaf2
-      internalID: 1572495504
+      spriteID: af7a622d8c0310c4bb686dcb65f14a7b
+      internalID: -310044125
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_10
+      name: letucin_angry_10
       rect:
         serializedVersion: 2
-        x: 2350
+        x: 2520
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -345,20 +345,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 7156ef38d665ff94f8b4e52b7c27a35a
-      internalID: -2097359670
+      spriteID: a83a3ef1f8cc6b64783eebec48476b77
+      internalID: 320192466
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_11
+      name: letucin_angry_11
       rect:
         serializedVersion: 2
-        x: 2585
+        x: 2772
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -367,20 +367,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: e86217cb047a21b4e9a23e554f146cba
-      internalID: -1016470508
+      spriteID: 83178c40297f1f74a9b5770e63059ac9
+      internalID: -2087448242
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_12
+      name: letucin_angry_12
       rect:
         serializedVersion: 2
-        x: 2820
+        x: 3024
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -389,20 +389,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: eaa6d224af4b1314f915bdd2f70e650b
-      internalID: -826743112
+      spriteID: 22dc260b5a29ebc4eabb2ec74e922c02
+      internalID: 443016445
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_13
+      name: letucin_angry_13
       rect:
         serializedVersion: 2
-        x: 3055
+        x: 3276
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -411,20 +411,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 2eee3bbabb48fc54aa709dfd639bb398
-      internalID: 1226418957
+      spriteID: cb801163cdbb3564eb59db88830f7aef
+      internalID: 67191534
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_14
+      name: letucin_angry_14
       rect:
         serializedVersion: 2
-        x: 3290
+        x: 3528
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -433,20 +433,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 81a9ad7f5cc144e4e9766bcef72d9ea5
-      internalID: 1059215076
+      spriteID: 5f6953ef579c50f488467df4a4951598
+      internalID: -1584632762
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_15
+      name: letucin_angry_15
       rect:
         serializedVersion: 2
-        x: 3525
+        x: 3780
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -455,20 +455,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ebf5f5bbc71305e4a84ebbb5236c7763
-      internalID: 198752138
+      spriteID: b4fa250811a494747b632248e1138abe
+      internalID: -763131357
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_16
+      name: letucin_angry_16
       rect:
         serializedVersion: 2
-        x: 3760
+        x: 4032
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -477,20 +477,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: ffff301f8ce46e74a98bceb09dead01f
-      internalID: -1278992520
+      spriteID: a6e1e9d0571e3da4a90fbc14d157653e
+      internalID: 488378592
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_17
+      name: letucin_angry_17
       rect:
         serializedVersion: 2
-        x: 3995
+        x: 4284
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -499,20 +499,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 6caff80016d941f4ea81ed7145dad15b
-      internalID: -1415271427
+      spriteID: f31c04c70f32ded4c96b547f291bdeec
+      internalID: 2048105773
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_18
+      name: letucin_angry_18
       rect:
         serializedVersion: 2
-        x: 4230
+        x: 4536
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -521,20 +521,20 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 3feb48070f077f04fbb3e5b057553ca2
-      internalID: 1569116545
+      spriteID: 3d2207e4cd6bbbd45899d6b6a929843c
+      internalID: 2076627576
       vertices: []
       indices: 
       edges: []
       weights: []
     - serializedVersion: 2
-      name: letucin_walk_19
+      name: letucin_angry_19
       rect:
         serializedVersion: 2
-        x: 4465
+        x: 4788
         y: 0
-        width: 235
-        height: 339
+        width: 252
+        height: 336
       alignment: 0
       pivot: {x: 0.5, y: 0.5}
       border: {x: 0, y: 0, z: 0, w: 0}
@@ -543,8 +543,8 @@ TextureImporter:
       physicsShape: []
       tessellationDetail: 0
       bones: []
-      spriteID: 0da905789578da741898c47843bb2da1
-      internalID: 154136720
+      spriteID: 82884c7102f7bdf4f8f89ce9dae0fe8d
+      internalID: -2028002314
       vertices: []
       indices: 
       edges: []
@@ -553,7 +553,7 @@ TextureImporter:
     customData: 
     physicsShape: []
     bones: []
-    spriteID: b6e90c360b5f3494eb09a74f0e91c307
+    spriteID: a32d2c6f1cd181c4bacb82a66824fa10
     internalID: 0
     vertices: []
     indices: 
@@ -563,28 +563,28 @@ TextureImporter:
     spriteCustomMetadata:
       entries:
       - key: SpriteEditor.SliceSettings
-        value: '{"sliceOnImport":false,"gridCellCount":{"x":20.0,"y":1.0},"gridSpriteSize":{"x":235.0,"y":339.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
+        value: '{"sliceOnImport":false,"gridCellCount":{"x":20.0,"y":1.0},"gridSpriteSize":{"x":252.0,"y":336.0},"gridSpriteOffset":{"x":0.0,"y":0.0},"gridSpritePadding":{"x":0.0,"y":0.0},"pivot":{"x":0.5,"y":0.5},"pivotPixels":{"x":0.0,"y":0.0},"autoSlicingMethod":0,"spriteAlignment":0,"pivotUnitMode":0,"slicingType":2,"keepEmptyRects":false,"isAlternate":false}'
     nameFileIdTable:
-      letucin_walk_0: 537808801
-      letucin_walk_1: -88756609
-      letucin_walk_10: -2097359670
-      letucin_walk_11: -1016470508
-      letucin_walk_12: -826743112
-      letucin_walk_13: 1226418957
-      letucin_walk_14: 1059215076
-      letucin_walk_15: 198752138
-      letucin_walk_16: -1278992520
-      letucin_walk_17: -1415271427
-      letucin_walk_18: 1569116545
-      letucin_walk_19: 154136720
-      letucin_walk_2: 1196822254
-      letucin_walk_3: -739149706
-      letucin_walk_4: 1807912321
-      letucin_walk_5: 977761408
-      letucin_walk_6: -1126960168
-      letucin_walk_7: -1297908651
-      letucin_walk_8: 2121940993
-      letucin_walk_9: 1572495504
+      letucin_angry_0: -129784224
+      letucin_angry_1: 249076892
+      letucin_angry_10: 320192466
+      letucin_angry_11: -2087448242
+      letucin_angry_12: 443016445
+      letucin_angry_13: 67191534
+      letucin_angry_14: -1584632762
+      letucin_angry_15: -763131357
+      letucin_angry_16: 488378592
+      letucin_angry_17: 2048105773
+      letucin_angry_18: 2076627576
+      letucin_angry_19: -2028002314
+      letucin_angry_2: 568738043
+      letucin_angry_3: -1346314786
+      letucin_angry_4: 332462413
+      letucin_angry_5: 536850079
+      letucin_angry_6: -375143959
+      letucin_angry_7: -1357654546
+      letucin_angry_8: 1352278923
+      letucin_angry_9: -310044125
   mipmapLimitGroupName: 
   pSDRemoveMatte: 0
   userData: 

@@ -38,7 +38,7 @@ public class MinigameProgressManager : MonoBehaviour
     public List<string> nombresMinijuegos = new List<string>();
 
     // Diccionario para acceso rápido por nombre de minijuego
-    private Dictionary<string, MinigameProgress> progresoMinijuegos = new Dictionary<string, MinigameProgress>();
+    public Dictionary<string, MinigameProgress> progresoMinijuegos = new Dictionary<string, MinigameProgress>();
 
     // Minijuego actual en ejecución
     private string minijuegoActual = "";

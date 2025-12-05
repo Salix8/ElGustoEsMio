@@ -49,6 +49,10 @@ public class BookAnimator : MonoBehaviour
         }
     }
 
+    public bool getIsBookShown()
+    {
+        return isBookShown;
+    }
     void Update()
     {
         if (bookPanel == null) return;

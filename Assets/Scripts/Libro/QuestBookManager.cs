@@ -27,12 +27,41 @@ public class QuestBookManager : MonoBehaviour
     [Tooltip("La lista de todas las misiones del jugador. Rellénala desde el inspector para probar.")]
     public List<QuestTask> allQuests;
 
+    [Header("Prefab y Contenedor de UI")]
+    [Tooltip("Arrastra aquí el *Prefab* de 'QuestItem_Template' desde tu ventana de Project.")]
+
+
+
+    public MinigameProgressManager minigameProgressManager;
+
+    private bool isBookOpen = false;
+
+    // --- (TEST) ---
     void Start()
     {
-        // Asegurarse de que ambos contenedores están en un estado inicial correcto
-        if(taskListContainer != null) taskListContainer.SetActive(true);
-        if(scoreUIContainer != null) scoreUIContainer.SetActive(false);
+        // Si la lista está vacía, añadimos datos de prueba
+        if (allQuests == null || allQuests.Count == 0)
+        {
+            Debug.Log("No hay misiones. Creando misiones de prueba.");
+            allQuests = new List<QuestTask>();
+            allQuests.Add(new QuestTask("Coloca las verduras en la tabla de cortar"));
+            allQuests.Add(new QuestTask("Cocina la verdura cortada en el horno"));
+            allQuests.Add(new QuestTask("Cocina el secreto en la plancha"));
+            allQuests.Add(new QuestTask("Emplata el milhojas de  verduras"));
+        }
+        if (minigameProgressManager == null)
+        {
+            minigameProgressManager = FindObjectOfType<MinigameProgressManager>();
+        }
+        if (minigameProgressManager != null)
+        {
+            for (int i = 0; i < minigameProgressManager.ContarMinijuegosCompletados(); i++)
+            {
+                allQuests[i].isCompleted = true;
+            }
+        }
     }
+    // --- (TEST) ---
 
     void Update()
     {
