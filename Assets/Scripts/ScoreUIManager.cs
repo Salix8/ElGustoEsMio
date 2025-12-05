@@ -28,7 +28,7 @@ public class ScoreUIManager : MonoBehaviour
         {
             minigameProgressManager = FindObjectOfType<MinigameProgressManager>();
         }
-        score = 1;
+        score = minigameProgressManager.puntuacionMedia;
         SetScore();
     }
     // Llama a esta función con tu puntuación
