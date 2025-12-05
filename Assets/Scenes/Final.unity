@@ -149,15 +149,16 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::minijuegofinal
   targetStackHeight: 10
-  tableWidth: 6
-  minDropHeight: 3
+  tableWidth: 5
+  minDropHeight: 2
   plateMoveSpeed: 1.5
   plateMoveRange: 2.5
   backgroundImage: {fileID: 21300000, guid: 89bc609f8c2e252479d14242b333284f, type: 3}
   plateSprite: {fileID: -1739235609, guid: 43414165d8ad61549985dcea99fd0332, type: 3}
   plateScaleMultiplier: 0.5
   sourcePlateScaleMultiplier: 0.5
-  sourcePlatesXPosition: 6.5
+  sourcePlatesXPosition: 9.04
+  sourcePlatesSpacing: 1.61
   uiPanelSprite: {fileID: 2028296662, guid: 90877c5f402a76f48a583487f27719f1, type: 3}
   customFont: {fileID: 12800000, guid: a7dcf0bfebb5eee498a85378547edba8, type: 3}
   ingredientRotation: 90

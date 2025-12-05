@@ -9,6 +9,8 @@ public class MinigameProgress
     public bool completado;
     public int puntuacion;
     public int intentos;
+
+    public int puntuacionMedia;
     
     // Para temporizadores persistentes
     public bool timerActivo;
@@ -416,7 +418,7 @@ public class MinigameProgressManager : MonoBehaviour
     public void FinalizarJuego(string escenaFinal = "PantallaFinal")
     {
         // Calcular puntuación media
-        int puntuacionMedia = CalcularPuntuacionMedia();
+        puntuacionMedia = CalcularPuntuacionMedia();
         
         // Guardar puntuación final en PlayerPrefs
         PlayerPrefs.SetInt("PuntuacionFinal", puntuacionMedia);
