@@ -430,15 +430,15 @@ public class MinigameProgressManager : MonoBehaviour
         Debug.Log($"Juego finalizado. Puntuación media: {puntuacionMedia}. Minijuegos completados: {ContarMinijuegosCompletados()}/{nombresMinijuegos.Count}");
 
         // Cargar escena final
-        if (!string.IsNullOrEmpty(escenaFinal))
+        if (!string.IsNullOrEmpty("escenaFinal"))
         {
-            if (Application.CanStreamedLevelBeLoaded(escenaFinal))
+            if (Application.CanStreamedLevelBeLoaded("escenaFinal"))
             {
-                SceneManager.LoadScene(escenaFinal);
+                SceneManager.LoadScene("escenaFinal");
             }
             else
             {
-                Debug.LogError($"La escena '{escenaFinal}' no está en Build Settings. Añádela en File > Build Settings.");
+                Debug.LogError($"La escena '{"escenaFinal"}' no está en Build Settings. Añádela en File > Build Settings.");
             }
         }
     }

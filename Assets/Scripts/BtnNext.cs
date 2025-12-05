@@ -8,7 +8,7 @@ public class BtnNext : MonoBehaviour
     {
         // Verificar si estamos en la escena "Final"
         string escenaActual = SceneManager.GetActiveScene().name;
-        
+        Debug.Log("botón pulsado");
         if (escenaActual == "Final")
         {
             // Finalizar el juego completo

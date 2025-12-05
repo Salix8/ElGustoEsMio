@@ -99,7 +99,7 @@ public class BookAnimator : MonoBehaviour
     {
         isAnimating = true;
         Debug.Log("Iniciando secuencia de apertura de libro...");
-        TimeManager.Instance.PauseGame();
+        //TimeManager.Instance.PauseGame();
         
         // 1. Indicar que el libro debe mostrarse para que Update empiece a moverlo
         isBookShown = true;
