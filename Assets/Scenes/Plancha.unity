@@ -1374,6 +1374,10 @@ PrefabInstance:
       value: -94.285
       objectReference: {fileID: 0}
     - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
+      propertyPath: scoreUIPrefab
+      value: 
+      objectReference: {fileID: 3160277701948843050, guid: a38d3d99901e47e4baf97ae2ecbb6908, type: 3}
+    - target: {fileID: 5889212816889903101, guid: 4c1a710a0312f70428d26fc07244cf75, type: 3}
       propertyPath: allQuests.Array.size
       value: 4
       objectReference: {fileID: 0}
